@@ -24,3 +24,22 @@ def getActiveHours(request):
 	serializer = TrainerHoursSerializer(trainerHours, many=True)
 	return Response(serializer.data)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def updateHour(request, **kwargs):
+	trainer = request.user.trainer
+	try:
+		updatingHour = trainer.trainerhours_set.get(id = kwargs['id'])
+	except:
+		return Response(data='You do not have permissions to update this hour', status=442)
+
+	serializer = TrainerHoursSerializer(instance = updatingHour, data=request.data)
+
+	if serializer.is_valid():
+		serializer.save()
+		return Response(serializer.data)
+	else:
+		return Response(serializer.errors, status=422)
+
+
+

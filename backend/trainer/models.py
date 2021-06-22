@@ -17,6 +17,9 @@ class TrainerHours(models.Model):
 	# trainer = models.ForeignKey(Trainer, on_delete=models.DO_NOTHING)
 	is_active = models.BooleanField(blank=True, null=True, default=True)
 
+	def __str__(self):
+	 return str(self.trainer) + ' ' + str(self.working)
+
 class WorkingHours(models.Model):
 	start_time = models.CharField(max_length=5, null=False, blank=False)
 	finish_time = models.CharField(max_length=50, null=False, blank=False)
