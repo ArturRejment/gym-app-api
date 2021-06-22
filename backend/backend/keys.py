@@ -1,0 +1,1 @@
+DJANGO_KEY = 'django-insecure-4nv^g+9b0u*dns+4&s$8j_(ty^7=2@!+j3bjpnlldqtk=z+f)a'
