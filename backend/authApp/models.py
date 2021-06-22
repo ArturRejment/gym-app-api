@@ -18,7 +18,7 @@ class User(AbstractUser):
 	phone = models.CharField(null=True, max_length=250)
 	address = models.ForeignKey(Address, verbose_name='address', on_delete=models.CASCADE, null=True, blank=True)
 
-	REQUIRED_FIELDS = ['username', 'phone', 'first_name', 'last_name']
+	REQUIRED_FIELDS = ['username', 'phone', 'first_name', 'last_name', 'address']
 	USERNAME_FIELD = 'email'
 
 	def __str__(self):
