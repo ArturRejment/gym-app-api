@@ -1,5 +1,7 @@
 from django.db import models
 from authApp.models import User
+import gym
+import datetime
 
 # Create your models here.
 
@@ -16,6 +18,19 @@ class GymMember(models.Model):
 	sign_up_date = models.DateField(auto_now_add=True)
 	is_suspended = models.BooleanField(blank=False, default=False)
 	account_credit = models.FloatField(null=False)
+
+	@property
+	def hasActiveMembership(self):
+		try:
+			membership = gym.models.MemberMemberships.objects.filter(member=self.id, expiry_date__gt=datetime.date.today())
+			print(membership)
+		except Exception:
+			membership = None
+
+		if membership != None and membership.count() != 0:
+			return True
+		else:
+			return False
 
 	def __str__(self):
 		return f'Member {self.user}'

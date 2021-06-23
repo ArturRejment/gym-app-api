@@ -5,13 +5,15 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .serializers import TrainerHoursSerializer
+from .models import GymMember
 
 # Create your views here.
 
 @api_view(['GET'])
 def index(request):
+	member = GymMember.objects.get(id=1)
 	context = {
-		'Trainer page': 'trainer'
+		'Trainer page': member.hasActiveMembership
 	}
 	return Response(context)
 
