@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .serializers import TrainerHoursSerializer
 from .models import GymMember
+from authApp.decorators import allowed_users
 
 # Create your views here.
 
@@ -19,6 +20,7 @@ def index(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+@allowed_users(allowed_roles=['trainer'])
 def getWorkingHours(request):
 	trainer = request.user.trainer
 	trainerHours = trainer.trainerhours_set.all()
@@ -28,6 +30,7 @@ def getWorkingHours(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@allowed_users(allowed_roles=['trainer'])
 def updateHour(request, **kwargs):
 	trainer = request.user.trainer
 	try:
