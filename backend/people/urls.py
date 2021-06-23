@@ -3,6 +3,6 @@ from . import views
 
 urlpatterns = [
 	path('', views.index),
-	path('trainer/active/', views.getActiveHours),
+	path('trainer/working/', views.getWorkingHours),
 	path('trainer/updateHour/<int:id>/', views.updateHour)
 ]

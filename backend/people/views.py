@@ -17,7 +17,7 @@ def index(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def getActiveHours(request):
+def getWorkingHours(request):
 	trainer = request.user.trainer
 	trainerHours = trainer.trainerhours_set.all()
 
