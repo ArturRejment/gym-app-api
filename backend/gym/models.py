@@ -1,20 +1,11 @@
 from django.db import models
-from authApp.models import User
+from people.models import Trainer, Receptionist, GymMember
 
 # Create your models here.
-
-class Trainer(models.Model):
-	user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
-	number_of_certifications = models.IntegerField(blank=True, null=True)
-	years_in_company = models.IntegerField(blank=True, null=True)
-
-	def __str__(self):
-	 return f'{self.user.first_name} {self.user.last_name}'
-
 class TrainerHours(models.Model):
 	trainer = models.ForeignKey(Trainer, on_delete=models.DO_NOTHING)
 	working = models.ForeignKey('WorkingHours', on_delete=models.DO_NOTHING)
-	# trainer = models.ForeignKey(Trainer, on_delete=models.DO_NOTHING)
+	member = models.ForeignKey(GymMember, on_delete=models.DO_NOTHING, null=True, blank=True)
 	is_active = models.BooleanField(blank=True, null=True, default=True)
 
 	def __str__(self):

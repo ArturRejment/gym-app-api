@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from .models import *
+from gym.models import *
 
 class TrainerHoursSerializer(serializers.ModelSerializer):
 	working_start = serializers.CharField(source='working.start_time', read_only=True)

@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'authApp',
-    'trainer',
+    'people',
+    'gym',
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
