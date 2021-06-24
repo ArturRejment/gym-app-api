@@ -4,6 +4,7 @@ from .models import *
 from gym.models import *
 
 class TrainerHoursSerializer(serializers.ModelSerializer):
+	member = serializers.CharField()
 	working_start = serializers.CharField(source='working.start_time', read_only=True)
 	working_finish = serializers.CharField(source='working.finish_time', read_only=True)
 	# member = serializers.CharField(source='working.member', read_only=False)
