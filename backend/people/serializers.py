@@ -23,3 +23,4 @@ class TrainerHoursSerializer(serializers.ModelSerializer):
 
 		instance.save()
 		return instance
+
