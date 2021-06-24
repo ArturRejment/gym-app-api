@@ -25,3 +25,15 @@ class TrainerHoursSerializer(serializers.ModelSerializer):
 		instance.save()
 		return instance
 
+class WorkingHourSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = WorkingHours
+		fields = '__all__'
+
+class ActiveHoursSerializer(serializers.ModelSerializer):
+	# user = UserSerializer()
+	# workingHours = TrainerHoursSerializer(trainerhours_set.all())
+	working = WorkingHourSerializer()
+	class Meta:
+		model = TrainerHours
+		fields = ['id', 'working']

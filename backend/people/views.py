@@ -5,8 +5,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
-from .serializers import TrainerHoursSerializer
-from .models import GymMember
+from .serializers import TrainerHoursSerializer, ActiveHoursSerializer
+from .models import GymMember, Trainer
 from authApp.decorators import allowed_users
 
 # Create your views here.
@@ -48,4 +48,21 @@ def updateHour(request, **kwargs):
 		return Response(serializer.errors, status=422)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@allowed_users(allowed_roles=['member'])
+def viewAvailableTrainers(request):
+	trainers = Trainer.objects.all()
+	print(trainers)
+	acitveHours = [trainer.trainerhours_set.all() for trainer in trainers]
+	# activeHour = trainers.trainerhours_set.all()
 
+	serializer = {}
+
+	for i, hour in enumerate(acitveHours):
+		trainer = str(trainers[i].user).split(" ")
+		trainerName = trainer[1] + ' ' + trainer[2]
+		print(trainerName)
+		serializer[f'{trainerName}'] =  ActiveHoursSerializer(acitveHours[i], many=True).data
+
+	return Response(serializer)
