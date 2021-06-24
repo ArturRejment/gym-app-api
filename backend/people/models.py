@@ -38,6 +38,7 @@ class GymMember(models.Model):
 class Receptionist(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	is_senior_receptionist = models.BooleanField(blank=False, null=False, default=False)
+	shop = models.ForeignKey('gym.Shop', on_delete=models.CASCADE, null=True, blank=True)
 
 	def __str__(self):
 		return f'Receptionist {self.user}'

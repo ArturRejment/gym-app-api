@@ -7,7 +7,7 @@ from rest_framework import status
 
 from authApp.decorators import allowed_users
 from .serializers import ActiveMembershipsSerializer
-from .models import MemberMemberships, Membership
+from .models import MemberMemberships, Membership,Shop
 import datetime
 
 # Create your views here.
@@ -21,6 +21,12 @@ def activeMemberships(request):
 
 	serializer = ActiveMembershipsSerializer(activeMemberships, many=True)
 	return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@allowed_users(allowed_roles=['receptionist'])
+def addProduct(request):
+	pass
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -39,4 +45,11 @@ def renewMembership(request, **kwargs):
 			expiry_date=end_date
 		)
 		return Response('Membership created!')
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def viewProducts(request, **kwargs):
+	shop = Shop.objects.get(id = kwargs['id'])
+	products = shop.shopproducts_set.all()
+
 

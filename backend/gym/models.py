@@ -41,7 +41,7 @@ class Product(models.Model):
 	product_weight = models.IntegerField()
 
 	def __str__(self):
-	 return f'{self.product_name} {self.product_weight}'
+	 return f'{self.product_name} {self.product_weight}g'
 
 
 class Shop(models.Model):
@@ -50,3 +50,11 @@ class Shop(models.Model):
 
 	def __str__(self):
 		return f'{self.shop_name} {self.address}'
+
+class ShopProducts(models.Model):
+	shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=False, blank=False)
+	product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False, blank=False)
+	product_amount = models.IntegerField()
+
+	def __str__(self):
+		return f'{self.product} in {self.shop}'
