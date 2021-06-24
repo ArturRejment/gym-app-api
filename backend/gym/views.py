@@ -36,7 +36,10 @@ def renewMembership(request, **kwargs):
 	if member.hasActiveMembership:
 		return Response('Member already has active membership')
 	else:
-		membership = Membership.objects.get(id = kwargs['id'])
+		try:
+			membership = Membership.objects.get(id=kwargs['id'])
+		except Exception:
+			return Response(f'There is no Membership with id {kwargs["id"]}')
 		st_date = datetime.date.today()
 		end_date = st_date + datetime.timedelta(days=+30)
 		newMembership = MemberMemberships.objects.create(
@@ -49,7 +52,11 @@ def renewMembership(request, **kwargs):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def viewProducts(request, **kwargs):
-	shop = Shop.objects.get(id = kwargs['id'])
+	try:
+		shop = Shop.objects.get(id = kwargs['id'])
+	except Exception:
+		return Response(f'There is no shop with id {kwargs["id"]}')
+
 	products = shop.shopproducts_set.all()
 
 	serializer = ShopProductsSerializer(products, many=True)
