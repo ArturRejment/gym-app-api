@@ -23,7 +23,6 @@ class GymMember(models.Model):
 	def hasActiveMembership(self):
 		try:
 			membership = gym.models.MemberMemberships.objects.filter(member=self.id, expiry_date__gt=datetime.date.today())
-			print(membership)
 		except Exception:
 			membership = None
 

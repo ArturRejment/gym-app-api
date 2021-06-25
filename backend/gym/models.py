@@ -65,12 +65,18 @@ class GroupTraining(models.Model):
 	time = models.ForeignKey(WorkingHours, null=False, blank=False, on_delete=models.CASCADE)
 	max_people = models.IntegerField()
 
+	@property
+	def signedPeople(self):
+		groupTrainings = GroupTrainingSchedule.objects.filter(group_training = self)
+		return groupTrainings.count()
+
 	def __str__(self):
 		return self.training_name
 
 class GroupTrainingSchedule(models.Model):
 	group_training = models.ForeignKey(GroupTraining, null=False, blank=False, on_delete=models.CASCADE)
 	member = models.ForeignKey(GymMember, null=False, blank=False, on_delete=models.CASCADE)
+
 
 	def __str__(self):
 		return f'{self.member} in {self.group_training}'

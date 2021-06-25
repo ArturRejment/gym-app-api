@@ -7,11 +7,18 @@ from rest_framework import status
 
 from authApp.decorators import allowed_users
 from .serializers import ActiveMembershipsSerializer, ShopProductsSerializer
-from .models import MemberMemberships, Membership,Shop
+from .models import MemberMemberships, Membership,Shop, GroupTraining
 import datetime
 
 # Create your views here.
 
+@api_view(['GET'])
+def test(request):
+	train = GroupTraining.objects.get(id=1)
+	context = {
+		'Signed in: ': train.signedPeople
+	}
+	return Response(context)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
