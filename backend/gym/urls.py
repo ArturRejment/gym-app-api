@@ -5,5 +5,6 @@ urlpatterns = [
 	path('activeMemberships/', views.activeMemberships),
 	path('renewMembership/<int:id>/', views.renewMembership, name="renewMembership"),
 	path('viewProducts/<int:id>/', views.viewProducts, name='viewProducts'),
+	path('groupTrainings/', views.viewGroupTrainings, name='viewGroupTrainings'),
 	path('test', views.test, name='test'),
 ]

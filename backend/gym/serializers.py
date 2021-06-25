@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from people.serializers import UserSerializer
+from people.serializers import UserSerializer, TrainerSerializerShort, WorkingHourSerializer
 from .models import *
 import datetime
 
@@ -39,3 +39,11 @@ class ShopProductsSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = ShopProducts
 		fields = ('product', 'product_amount', 'price')
+
+class GroupTrainingSerializer(serializers.ModelSerializer):
+	trainer = TrainerSerializerShort()
+	time = WorkingHourSerializer()
+
+	class Meta:
+		model = GroupTraining
+		fields = ('id', 'training_name', 'trainer', 'time')

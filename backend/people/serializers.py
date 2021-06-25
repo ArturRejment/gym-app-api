@@ -3,6 +3,17 @@ from djoser.serializers import UserCreateSerializer, UserSerializer
 from .models import *
 from gym.models import *
 
+class UserSerializerShort(serializers.ModelSerializer):
+	class Meta:
+		model = User
+		fields = ('first_name', 'last_name', 'phone')
+
+class TrainerSerializerShort(serializers.ModelSerializer):
+	user = UserSerializerShort()
+	class Meta:
+		model = Trainer
+		fields = ('id', 'user')
+
 class TrainerHoursSerializer(serializers.ModelSerializer):
 	member = serializers.CharField()
 	working_start = serializers.CharField(source='working.start_time', read_only=True)
@@ -37,3 +48,4 @@ class ActiveHoursSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = TrainerHours
 		fields = ['id', 'working']
+

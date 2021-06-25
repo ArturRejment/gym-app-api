@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
 from authApp.decorators import allowed_users
-from .serializers import ActiveMembershipsSerializer, ShopProductsSerializer
+from .serializers import ActiveMembershipsSerializer, ShopProductsSerializer, GroupTrainingSerializer
 from .models import MemberMemberships, Membership,Shop, GroupTraining
 import datetime
 
@@ -67,5 +67,13 @@ def viewProducts(request, **kwargs):
 	products = shop.shopproducts_set.all()
 
 	serializer = ShopProductsSerializer(products, many=True)
+	return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def viewGroupTrainings(request):
+	trainings = GroupTraining.objects.all()
+	serializer = GroupTrainingSerializer(trainings, many=True)
+
 	return Response(serializer.data)
 
