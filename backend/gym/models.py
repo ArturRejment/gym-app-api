@@ -58,3 +58,19 @@ class ShopProducts(models.Model):
 
 	def __str__(self):
 		return f'{self.product} in {self.shop}'
+
+class GroupTraining(models.Model):
+	training_name = models.CharField(max_length=250, null=False, blank=False)
+	trainer = models.ForeignKey(Trainer, null=False, blank=False, on_delete=models.CASCADE)
+	time = models.ForeignKey(WorkingHours, null=False, blank=False, on_delete=models.CASCADE)
+	max_people = models.IntegerField()
+
+	def __str__(self):
+		return self.training_name
+
+class GroupTrainingSchedule(models.Model):
+	group_training = models.ForeignKey(GroupTraining, null=False, blank=False, on_delete=models.CASCADE)
+	member = models.ForeignKey(GymMember, null=False, blank=False, on_delete=models.CASCADE)
+
+	def __str__(self):
+		return f'{self.member} in {self.group_training}'

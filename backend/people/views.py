@@ -62,7 +62,6 @@ def viewAvailableTrainers(request):
 	for i, hour in enumerate(acitveHours):
 		trainer = str(trainers[i].user).split(" ")
 		trainerName = trainer[1] + ' ' + trainer[2]
-		print(trainerName)
 		serializer[f'{trainerName}'] =  ActiveHoursSerializer(acitveHours[i], many=True).data
 
 	return Response(serializer)

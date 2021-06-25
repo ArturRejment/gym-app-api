@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import TrainerHours, WorkingHours, MemberMemberships, Membership, Shop, Product, ShopProducts
+from .models import TrainerHours, WorkingHours, MemberMemberships, Membership, Shop, Product, ShopProducts, GroupTraining, GroupTrainingSchedule
 
 # Register your models here.
 
@@ -10,3 +10,5 @@ admin.site.register(Membership)
 admin.site.register(Shop)
 admin.site.register(Product)
 admin.site.register(ShopProducts)
+admin.site.register(GroupTraining)
+admin.site.register(GroupTrainingSchedule)
