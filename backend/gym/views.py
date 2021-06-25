@@ -83,7 +83,10 @@ def viewGroupTrainings(request):
 def signUpForTraining(request, **kwargs):
 	member = request.user.gymmember
 
-	groupTraining = GroupTraining.objects.get(id=kwargs['id'])
+	try:
+		groupTraining = GroupTraining.objects.get(id=kwargs['id'])
+	except Exception:
+		return Response(f'There is no group training with id {kwargs["id"]}')
 
 	if groupTraining.signedPeople >= groupTraining.max_people:
 		return Response('There is already maximum number of people signed for this training')
