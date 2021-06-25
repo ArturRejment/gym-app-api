@@ -36,6 +36,19 @@ class TrainerHoursSerializer(serializers.ModelSerializer):
 		instance.save()
 		return instance
 
+class SignForTrainingSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = TrainerHours
+		fields = ['member']
+
+	def update(self, instance, validated_data):
+		ident = validated_data.get('member', instance.member)
+
+		instance.member = ident
+
+		instance.save()
+		return instance
+
 class WorkingHourSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = WorkingHours

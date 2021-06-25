@@ -6,4 +6,5 @@ urlpatterns = [
 	path('trainer/working/', views.getWorkingHours),
 	path('trainer/updateHour/<int:id>/', views.updateHour),
 	path('viewActiveHours/', views.viewAvailableTrainers),
+	path('signForPersonalTraining/<int:id>/', views.signForPersonalTraining),
 ]

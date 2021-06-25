@@ -4,13 +4,12 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+import datetime
 
 from authApp.decorators import allowed_users
 from .serializers import ActiveMembershipsSerializer, ShopProductsSerializer, GroupTrainingSerializer
 from .models import MemberMemberships, Membership,Shop, GroupTraining, GroupTrainingSchedule
-import datetime
 
-# Create your views here.
 
 @api_view(['GET'])
 def test(request):
@@ -20,6 +19,11 @@ def test(request):
 	}
 	return Response(context)
 
+
+#!---------------------------------
+#!			Memberships
+#!---------------------------------
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['receptionist'])
@@ -28,12 +32,6 @@ def activeMemberships(request):
 
 	serializer = ActiveMembershipsSerializer(activeMemberships, many=True)
 	return Response(serializer.data)
-
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-@allowed_users(allowed_roles=['receptionist'])
-def addProduct(request):
-	pass
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -56,6 +54,11 @@ def renewMembership(request, **kwargs):
 		)
 		return Response('Membership created!')
 
+
+#!---------------------------------
+#!			Products
+#!---------------------------------
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def viewProducts(request, **kwargs):
@@ -68,6 +71,17 @@ def viewProducts(request, **kwargs):
 
 	serializer = ShopProductsSerializer(products, many=True)
 	return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@allowed_users(allowed_roles=['receptionist'])
+def addProduct(request):
+	pass
+
+#!---------------------------------
+#!			Group Trainings
+#!---------------------------------
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
