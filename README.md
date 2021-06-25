@@ -33,14 +33,14 @@ Default hostname and port: http://127.0.0.1:8000
 - Create virtual environment with command `python -m venv env`
 - Type `env\Scripts\activate.bat` to activate the environment
 - Type `pip install -r requirements.txt` to install all the necessary libs
-- Go to the backen location with `cd backend`
+- Go to the backend location with `cd backend`
 - Set the database with two commands: `python manage.py makemigrations` and then `python manage.py migrate`
 - Run server with `python manage.py runserver`
 
 ## View the database
 If you want to view your database, create a super user and go to the admin page.
 
-- Open directory with `manage.py` file
+- Open directory where is `manage.py` file
 - Create super user with `python manage.py createsuperuser`
 - Provide the required informations like username, email, password etc.
 - Run the server, go to the `http://127.0.0.1:8000/admin` and log in with credentials provided in the previous step
