@@ -7,3 +7,11 @@ class UserCreateSerializer(UserCreateSerializer):
 	class Meta(UserCreateSerializer.Meta):
 		model = User
 		fields = ('id', 'username', 'email', 'first_name', 'last_name', 'address')
+
+class AddressSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Address
+		fields = '__all__'
+
+	def create(self, validated_data):
+		return Address.objects.create(**validated_data)

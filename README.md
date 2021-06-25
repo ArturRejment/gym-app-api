@@ -21,6 +21,7 @@ Default hostname and port: http://127.0.0.1:8000
 - `/auth/token/login/` [Anyone] allows to login for the account - returns auth_token if success
 - `/auth/users/` [Anyone] allows to register an Gym Member account
 - `/auth/token/logout/` [Logged user] allows to logout
+- `/auth/createAddress/` [Anyone] creates an address
 - `/trainer/updateHour/<int:id>/` [Trainer] allows to update information about trainer working hour specified by id
 - `/signForPersonalTraining/<int:id>/` [GymMember] allows to sign for personal training specified by id
 - `/signForTraining/<int:id>/` [GymMember] allows to sign for group training specified by id
