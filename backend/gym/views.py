@@ -7,13 +7,13 @@ from rest_framework import status
 import datetime
 
 from authApp.decorators import allowed_users
-from .serializers import ActiveMembershipsSerializer, ShopProductsSerializer, GroupTrainingSerializer, ProductSerializer
-from .models import MemberMemberships, Membership,Shop, GroupTraining, GroupTrainingSchedule, Product
+import gym.serializers as GymSerializers
+import gym.models as GymModels
 
 
 @api_view(['GET'])
 def test(request):
-	train = GroupTraining.objects.get(id=1)
+	train = GymModels.GroupTraining.objects.get(id=1)
 	context = {
 		'Signed in: ': train.signedPeople
 	}
@@ -28,9 +28,9 @@ def test(request):
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['receptionist'])
 def activeMemberships(request):
-	activeMemberships = MemberMemberships.objects.filter(expiry_date__gt = datetime.date.today())
+	activeMemberships = GymModels.MemberMemberships.objects.filter(expiry_date__gt = datetime.date.today())
 
-	serializer = ActiveMembershipsSerializer(activeMemberships, many=True)
+	serializer = GymSerializers.ActiveMembershipsSerializer(activeMemberships, many=True)
 	return Response(serializer.data)
 
 @api_view(['POST'])
@@ -42,12 +42,12 @@ def renewMembership(request, **kwargs):
 		return Response('Member already has active membership')
 	else:
 		try:
-			membership = Membership.objects.get(id=kwargs['id'])
+			membership = GymModels.Membership.objects.get(id=kwargs['id'])
 		except Exception:
 			return Response(f'There is no Membership with id {kwargs["id"]}')
 		st_date = datetime.date.today()
 		end_date = st_date + datetime.timedelta(days=+30)
-		newMembership = MemberMemberships.objects.create(
+		newMembership = GymModels.MemberMemberships.objects.create(
 			member=member,
 			membership=membership,
 			expiry_date=end_date
@@ -63,39 +63,64 @@ def renewMembership(request, **kwargs):
 @permission_classes([IsAuthenticated])
 def viewProducts(request, **kwargs):
 	try:
-		shop = Shop.objects.get(id = kwargs['id'])
+		shop = GymModels.Shop.objects.get(id = kwargs['id'])
 	except Exception:
 		return Response(f'There is no shop with id {kwargs["id"]}')
 
 	products = shop.shopproducts_set.all()
 
-	serializer = ShopProductsSerializer(products, many=True)
+	serializer = GymSerializers.ShopProductsSerializer(products, many=True)
 	return Response(serializer.data)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['receptionist'])
 def viewAllProducts(request):
-	products = Product.objects.all()
-	serializer = ProductSerializer(products, many=True)
+	products = GymModels.Product.objects.all()
+	serializer = GymSerializers.ProductSerializer(products, many=True)
 	return Response(serializer.data)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['receptionist'])
-def addProduct(request):
-	pass
+def addProduct(request, **kwargs):
+	receptionist = request.user.receptionist
+	amount = request.data.get('amount')
+	if amount == None:
+		return Response('Please specify the amount')
+
+	print(receptionist.shop)
+	try:
+		shop = GymModels.Shop.objects.get(id = receptionist.shop.id)
+	except Exception:
+		return Response('You have no privileges to manage any shops!')
+
+	try:
+		product = GymModels.Product.objects.get(id = kwargs['id'])
+	except Exception:
+		return Response(f'Product with id {kwargs["id"]} does not exists!')
+
+	shopProducts = shop.shopproducts_set.all()
+	for i, prod in enumerate(shopProducts):
+		if shopProducts[i].product == product:
+			return Response(f'Product {product} already exists in this shop!')
+
+	newProduct = GymModels.ShopProducts.objects.create(
+		shop=shop,
+		product=product,
+		product_amount=amount
+	)
+	return Response(f'Product {product} added to the shop!')
 
 #!---------------------------------
 #!			Group Trainings
 #!---------------------------------
 
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def viewGroupTrainings(request):
-	trainings = GroupTraining.objects.all()
-	serializer = GroupTrainingSerializer(trainings, many=True)
+	trainings = GymModels.GroupTraining.objects.all()
+	serializer = GymSerializers.GroupTrainingSerializer(trainings, many=True)
 
 	return Response(serializer.data)
 
@@ -106,7 +131,7 @@ def signUpForTraining(request, **kwargs):
 	member = request.user.gymmember
 
 	try:
-		groupTraining = GroupTraining.objects.get(id=kwargs['id'])
+		groupTraining = GymModels.GroupTraining.objects.get(id=kwargs['id'])
 	except Exception:
 		return Response(f'There is no group training with id {kwargs["id"]}')
 
@@ -118,7 +143,7 @@ def signUpForTraining(request, **kwargs):
 		if trainSet[i].member == member:
 			return Response('You are alredy signed for this training!')
 
-	newSchedule = GroupTrainingSchedule.objects.create(
+	newSchedule = GymModels.GroupTrainingSchedule.objects.create(
 		member=member,
 		group_training = groupTraining
 	)
