@@ -7,8 +7,8 @@ from rest_framework import status
 import datetime
 
 from authApp.decorators import allowed_users
-from .serializers import ActiveMembershipsSerializer, ShopProductsSerializer, GroupTrainingSerializer
-from .models import MemberMemberships, Membership,Shop, GroupTraining, GroupTrainingSchedule
+from .serializers import ActiveMembershipsSerializer, ShopProductsSerializer, GroupTrainingSerializer, ProductSerializer
+from .models import MemberMemberships, Membership,Shop, GroupTraining, GroupTrainingSchedule, Product
 
 
 @api_view(['GET'])
@@ -70,6 +70,14 @@ def viewProducts(request, **kwargs):
 	products = shop.shopproducts_set.all()
 
 	serializer = ShopProductsSerializer(products, many=True)
+	return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@allowed_users(allowed_roles=['receptionist'])
+def viewAllProducts(request):
+	products = Product.objects.all()
+	serializer = ProductSerializer(products, many=True)
 	return Response(serializer.data)
 
 @api_view(['POST'])
