@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group
 
 # Create your models here.
 
@@ -23,3 +23,8 @@ class User(AbstractUser):
 
 	def __str__(self):
 		return f'{self.id} {self.first_name} {self.last_name}'
+
+	def save(self, *args, **kwargs):
+		super().save(*args, **kwargs)
+		group = Group.objects.get(name='member')
+		self.groups.add(group)

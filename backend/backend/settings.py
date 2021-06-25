@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'authApp',
+    'authApp.apps.AuthConfig',
     'people',
     'gym',
     'rest_framework',
