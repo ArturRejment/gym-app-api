@@ -7,7 +7,7 @@ from rest_framework import status
 
 from authApp.decorators import allowed_users
 from .serializers import ActiveMembershipsSerializer, ShopProductsSerializer, GroupTrainingSerializer
-from .models import MemberMemberships, Membership,Shop, GroupTraining
+from .models import MemberMemberships, Membership,Shop, GroupTraining, GroupTrainingSchedule
 import datetime
 
 # Create your views here.
@@ -76,4 +76,27 @@ def viewGroupTrainings(request):
 	serializer = GroupTrainingSerializer(trainings, many=True)
 
 	return Response(serializer.data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@allowed_users(allowed_roles=['member'])
+def signUpForTraining(request, **kwargs):
+	member = request.user.gymmember
+
+	groupTraining = GroupTraining.objects.get(id=kwargs['id'])
+
+	if groupTraining.signedPeople >= groupTraining.max_people:
+		return Response('There is already maximum number of people signed for this training')
+
+	trainSet = groupTraining.grouptrainingschedule_set.all()
+	for i, schedule in enumerate(trainSet):
+		if trainSet[i].member == member:
+			return Response('You are alredy signed for this training!')
+
+	newSchedule = GroupTrainingSchedule.objects.create(
+		member=member,
+		group_training = groupTraining
+	)
+
+	return Response('You auspiciously signed for training!')
 
