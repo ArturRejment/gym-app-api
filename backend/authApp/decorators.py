@@ -1,4 +1,6 @@
 from django.http import HttpResponse
+from rest_framework import serializers
+from rest_framework.response import Response
 
 def allowed_users(allowed_roles = []):
     def decorator(view_function):
@@ -12,9 +14,7 @@ def allowed_users(allowed_roles = []):
             if group in allowed_roles:
                 return view_function(request, *args, **kwargs)
             else:
-                return HttpResponse("You are not authorized to view the page!")
-
-
+                return Response({"Auth": ["You are not authorized to view the page!"]}, status=401)
 
             return view_function(request, *args, **kwargs)
 

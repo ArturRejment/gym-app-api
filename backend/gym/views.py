@@ -64,11 +64,12 @@ def renewMembership(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def viewProducts(request, **kwargs):
+def viewProducts(request):
+	shopID = request.data.get('shopID')
 	try:
-		shop = GymModels.Shop.objects.get(id = kwargs['id'])
+		shop = GymModels.Shop.objects.get(id = shopID)
 	except Exception:
-		return Response(f'There is no shop with id {kwargs["id"]}')
+		raise serializers.ValidationError({"ShopID":[f'There is no shop with id {shopID}']})
 
 	products = shop.shopproducts_set.all()
 
@@ -86,27 +87,28 @@ def viewAllProducts(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['receptionist'])
-def addProduct(request, **kwargs):
+def addProduct(request):
 	receptionist = request.user.receptionist
 	amount = request.data.get('amount')
+	productID = request.data.get('productID')
 	if amount == None:
-		return Response('Please specify the amount')
+		raise serializers.ValidationError('Please specify the amount')
 
 	print(receptionist.shop)
 	try:
 		shop = GymModels.Shop.objects.get(id = receptionist.shop.id)
 	except Exception:
-		return Response('You have no privileges to manage any shops!')
+		raise serializers.ValidationError('You have no privileges to manage any shops!')
 
 	try:
-		product = GymModels.Product.objects.get(id = kwargs['id'])
+		product = GymModels.Product.objects.get(id = productID)
 	except Exception:
-		return Response(f'Product with id {kwargs["id"]} does not exists!')
+		raise serializers.ValidationError(f'Product with id {productID} does not exists!')
 
 	shopProducts = shop.shopproducts_set.all()
 	for i, prod in enumerate(shopProducts):
 		if shopProducts[i].product == product:
-			return Response(f'Product {product} already exists in this shop!')
+			raise serializers.ValidationError(f'Product {product} already exists in this shop!')
 
 	newProduct = GymModels.ShopProducts.objects.create(
 		shop=shop,
@@ -130,21 +132,22 @@ def viewGroupTrainings(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['member'])
-def signUpForTraining(request, **kwargs):
+def signUpForTraining(request):
 	member = request.user.gymmember
+	groupTrainingID = request.data.get('trainingID')
 
 	try:
-		groupTraining = GymModels.GroupTraining.objects.get(id=kwargs['id'])
+		groupTraining = GymModels.GroupTraining.objects.get(id=groupTrainingID)
 	except Exception:
-		return Response(f'There is no group training with id {kwargs["id"]}')
+		raise serializers.ValidationError({'Group Training': [f'There is no group training with id {groupTrainingID}']})
 
 	if groupTraining.signedPeople >= groupTraining.max_people:
-		return Response('There is already maximum number of people signed for this training')
+		raise serializers.ValidationError({'Error': 'There is already maximum number of people signed for this training'})
 
 	trainSet = groupTraining.grouptrainingschedule_set.all()
 	for i, schedule in enumerate(trainSet):
 		if trainSet[i].member == member:
-			return Response('You are alredy signed for this training!')
+			raise serializers.ValidationError({'Error': ['You are alredy signed for this training!']})
 
 	newSchedule = GymModels.GroupTrainingSchedule.objects.create(
 		member=member,
