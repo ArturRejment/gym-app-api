@@ -12,7 +12,7 @@ Default hostname and port: http://127.0.0.1:8000
 - `/trainer/working/` [Trainer] returns details about trainer working hours
 - `/viewActiveHours/` [Anyone] returns available training hours
 - `/groupTrainings/` [Anyone] returns available group trainings
-- `/viewProducts/<int:id>` [Anyone] returns products currently available in shop specified by id
+- `/viewProducts/` [Anyone] returns products currently available in shop specified by id
 - `/viewAllProducts/` [Receptionist] returns all products that can be added to the shop
 - `/activeMemberships/` [Receptionist] returns every member who has active membership
 
@@ -22,11 +22,11 @@ Default hostname and port: http://127.0.0.1:8000
 - `/auth/users/` [Anyone] allows to register an Gym Member account
 - `/auth/token/logout/` [Logged user] allows to logout
 - `/auth/createAddress/` [Anyone] creates an address
-- `/trainer/updateHour/<int:id>/` [Trainer] allows to update information about trainer working hour specified by id
-- `/signForPersonalTraining/<int:id>/` [GymMember] allows to sign for personal training specified by id
-- `/signForTraining/<int:id>/` [GymMember] allows to sign for group training specified by id
-- `/addProduct/<int:id>` [Receptionist] allows to add a product to the shop
-- `/renewMembership/<int:id>` [GymMember] allows to renew membership
+- `/trainer/updateHour/` [Trainer] allows to update information about trainer working hour specified by id
+- `/signForPersonalTraining/` [GymMember] allows to sign for personal training specified by id
+- `/signForTraining/` [GymMember] allows to sign for group training specified by id
+- `/addProduct/` [Receptionist] allows to add a product to the shop
+- `/renewMembership/` [GymMember] allows to renew membership
 
 # How to run the server
 
