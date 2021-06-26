@@ -24,12 +24,19 @@ class TrainerHoursSerializer(serializers.ModelSerializer):
 		model = TrainerHours
 		fields = ('id', 'working_start', 'working_finish', 'member', 'is_active')
 
+	def validate_member(self, value):
+		try:
+			member = GymMember.objects.get(id=value)
+		except:
+			raise serializers.ValidationError("Wrong member id given!")
+		return value
+
 	def update(self, instance, validated_data):
 		instance.is_active = validated_data.get('is_active', instance.is_active)
 		ident = validated_data.get('member', instance.member)
 
 		if ident != None:
-			instance.member = ident
+			instance.member = GymMember.objects.get(id= ident)
 		else:
 			instance.member = None
 

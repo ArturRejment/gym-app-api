@@ -53,10 +53,11 @@ def getWorkingHours(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['trainer'])
-def updateHour(request, **kwargs):
+def updateHour(request):
 	trainer = request.user.trainer
+	hourID = request.data.get('hourID')
 	try:
-		updatingHour = trainer.trainerhours_set.get(id = kwargs['id'])
+		updatingHour = trainer.trainerhours_set.get(id = hourID)
 	except:
 		return Response(data='You do not have permissions to update this hour', status=442)
 
@@ -92,11 +93,14 @@ def viewAvailableTrainers(request):
 def signForPersonalTraining(request, **kwargs):
 
 	member = request.user.gymmember
+	hourId = request.data.get('hourId')
+	if hourId == None:
+		return Response({'Missing argument': 'Missing required argument \'hourId\''})
 
 	try:
-		training = gym.TrainerHours.objects.get(id=kwargs['id'])
+		training = gym.TrainerHours.objects.get(id=hourId)
 	except Exception:
-		return Response(f'There is no hour with id {kwargs["id"]}')
+		return Response(f'There is no hour with id {hourId}')
 
 	if training.member != None:
 		return Response(f'There is already someone else signed for this training!')
