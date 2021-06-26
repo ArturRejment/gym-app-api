@@ -48,6 +48,12 @@ class SignForTrainingSerializer(serializers.ModelSerializer):
 		model = TrainerHours
 		fields = ['member']
 
+	def validate_hourID(self, value):
+		try:
+			hour = TrainerHours.objects.get(id = value)
+		except Exception:
+			raise serializers.ValidationError("Wrong hourID given!")
+
 	def update(self, instance, validated_data):
 		ident = validated_data.get('member', instance.member)
 

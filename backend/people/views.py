@@ -28,7 +28,7 @@ def apiOverview(request):
 		'/auth/users/ [Anyone]': 'allows to register an Gym Member account',
 		'/auth/token/logout/': '[Logged user] allows to logout',
 		'/auth/createAddress/': '[Anyone] creates an address',
-		'/trainer/updateHour/<int:id>/': '[Trainer] allows to update information about trainer working hour specified by id',
+		'/trainer/updateHour/': '[Trainer] allows to update information about trainer working hour specified by id',
 		'/signForPersonalTraining/<int:id>/': '[GymMember] allows to sign for personal training specified by id',
 		'/signForTraining/<int:id>/': '[GymMember] allows to sign for group training specified by id',
 		'/addProduct/<int:id>/': '[Receptionist] allows to add a product to the shop',
@@ -90,17 +90,17 @@ def viewAvailableTrainers(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['member'])
-def signForPersonalTraining(request, **kwargs):
+def signForPersonalTraining(request):
 
 	member = request.user.gymmember
-	hourId = request.data.get('hourId')
-	if hourId == None:
+	hourID = request.data.get('hourID')
+	if hourID == None:
 		return Response({'Missing argument': 'Missing required argument \'hourId\''})
 
 	try:
-		training = gym.TrainerHours.objects.get(id=hourId)
+		training = gym.TrainerHours.objects.get(id=hourID)
 	except Exception:
-		return Response(f'There is no hour with id {hourId}')
+		return Response(f'There is no hour with id {hourID}')
 
 	if training.member != None:
 		return Response(f'There is already someone else signed for this training!')
