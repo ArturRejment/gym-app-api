@@ -79,4 +79,4 @@ class GroupTrainingsSerializer(serializers.ModelSerializer):
 	time = WorkingHourSerializer()
 	class Meta:
 		model = GymModels.GroupTraining
-		fields = ('id','training_name', 'time', 'max_people', 'signedPeople')
+		fields = ('training_name', 'id', 'time', 'max_people', 'signedPeople')

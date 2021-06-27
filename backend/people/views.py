@@ -23,6 +23,7 @@ def apiOverview(request):
 		'/viewProducts/': '[Anyone] returns products currently available in shop specified by id',
 		'/viewAllProducts/': '[Receptionist] returns all products that can be added to the shop',
 		'/activeMemberships/': '[Receptionist] returns every member who has active membership',
+		'/trainer/viewGroupTrainings/' : '[Trainer] returns trainer\'s group trainings',
 		'POST': 'POST Method',
 		'/auth/token/login/': '[Anyone] allows to login for the account - returns auth_token if success',
 		'/auth/users/ [Anyone]': 'allows to register an Gym Member account',
