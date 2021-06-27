@@ -20,7 +20,7 @@ class WorkingHours(models.Model):
 		return f'{self.start_time} - {self.finish_time}'
 
 class Membership(models.Model):
-	membership_type = models.CharField(max_length=200)
+	membership_type = models.CharField(max_length=200, unique=True)
 	membership_price = models.DecimalField(max_digits=5, decimal_places=2)
 
 	def __str__(self):

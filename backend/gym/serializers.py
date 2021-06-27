@@ -53,3 +53,22 @@ class SignForGroupTrainingSerializer(serializers.ModelSerializer):
 
 	def save(self, validated_data):
 		return GroupTrainingSchedule.objects.create(**validated_data)
+
+class MembershipSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Membership
+		fields = ['id', 'membership_type', 'membership_price']
+
+	def create(self, validated_data):
+		type = validated_data.get('membership_type')
+
+		name = ''
+		type = type.split(" ")
+		for word in type:
+			word = word.capitalize()
+			name += word + ' '
+		name.strip()
+
+		validated_data['membership_type'] = name
+
+		return Membership.objects.create(**validated_data)

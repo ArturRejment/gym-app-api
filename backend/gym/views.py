@@ -57,6 +57,17 @@ def renewMembership(request):
 
 	return Response('Membership created!')
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@allowed_users(allowed_roles=['receptionist'])
+def createMembership(request):
+	serializer = GymSerializers.MembershipSerializer(data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+		return Response(serializer.data)
+
+	return Response(serializer.errors, status=422)
+
 
 #!---------------------------------
 #!			Products
