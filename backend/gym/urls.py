@@ -7,6 +7,7 @@ urlpatterns = [
 	path('createMembership/', views.createMembership, name="createMembership"),
 	path('viewMemberships/', views.viewMemberships, name="viewMemberships"),
 	path('viewProducts/', views.viewProducts, name='viewProducts'),
+	path('createProduct/', views.createProduct, name='createProduct'),
 	path('groupTrainings/', views.viewGroupTrainings, name='viewGroupTrainings'),
 	path('signForTraining/', views.signUpForTraining, name='signForTraining'),
 	path('viewAllProducts/', views.viewAllProducts, name='viewAllProducts'),

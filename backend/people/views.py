@@ -34,6 +34,7 @@ def apiOverview(request):
 		'/signForPersonalTraining/': '[GymMember] allows to sign for personal training specified by id',
 		'/signForTraining/': '[GymMember] allows to sign for group training specified by id',
 		'/addProduct/': '[Receptionist] allows to add a product to the shop',
+		'/createProduct/': '[Receptionist] allows to create a new product',
 		'/renewMembership/': '[GymMember] allows to renew membership',
 		'/createMembership/': '[Receptionist] allows to create a new membership',
 	}

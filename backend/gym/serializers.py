@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from people.serializers import UserSerializer, TrainerSerializerShort, WorkingHourSerializer
 from .models import *
+import gym.utils as ut
 import datetime
 
 class MemberSerializer(serializers.ModelSerializer):
@@ -20,7 +21,28 @@ class ActiveMembershipsSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Product
-		fields = '__all__'
+		fields = ['id', 'product_name', 'product_price', 'product_weight']
+
+	def validate_product_price(self, value):
+		if value <= 0:
+			raise serializers.ValidationError('Price cannot be negative!')
+		return value
+
+	def validate_product_weight(self, value):
+		if value <= 0:
+			raise serializers.ValidationError('Weight cannot be negative!')
+		return value
+
+	def create(self, validated_data):
+		name = validated_data.get('product_name')
+
+		name = ut.StripAndCapital(name)
+		validated_data['product_name'] = name
+
+		return Product.objects.create(**validated_data)
+
+
+
 
 class ShopProductsSerializer(serializers.ModelSerializer):
 	product = ProductSerializer()
@@ -62,12 +84,7 @@ class MembershipSerializer(serializers.ModelSerializer):
 	def create(self, validated_data):
 		type = validated_data.get('membership_type')
 
-		name = ''
-		type = type.split(" ")
-		for word in type:
-			word = word.capitalize()
-			name += word + ' '
-		name.strip()
+		name = ut.StripAndCapital(type)
 
 		validated_data['membership_type'] = name
 

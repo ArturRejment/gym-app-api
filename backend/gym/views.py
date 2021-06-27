@@ -106,6 +106,16 @@ def viewAllProducts(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['receptionist'])
+def createProduct(request):
+	serializer = GymSerializers.ProductSerializer(data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+		return Response(serializer.data)
+	return Response(serializer.errors, status=422)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@allowed_users(allowed_roles=['receptionist'])
 def addProduct(request):
 	receptionist = request.user.receptionist
 	amount = request.data.get('amount')
