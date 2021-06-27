@@ -68,6 +68,14 @@ def createMembership(request):
 
 	return Response(serializer.errors, status=422)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def viewMemberships(request):
+	memberships = GymModels.Membership.objects.all()
+	serializer = GymSerializers.MembershipSerializer(memberships, many=True)
+
+	return Response(serializer.data, status=200)
+
 
 #!---------------------------------
 #!			Products
