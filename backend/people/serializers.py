@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from .models import *
-from gym.models import *
+import gym.models as GymModels
 
 class UserSerializerShort(serializers.ModelSerializer):
 	class Meta:
@@ -21,7 +21,7 @@ class TrainerHoursSerializer(serializers.ModelSerializer):
 	# member = serializers.CharField(source='working.member', read_only=False)
 
 	class Meta:
-		model = TrainerHours
+		model = GymModels.TrainerHours
 		fields = ('id', 'working_start', 'working_finish', 'member', 'is_active')
 
 	def validate_member(self, value):
@@ -45,12 +45,12 @@ class TrainerHoursSerializer(serializers.ModelSerializer):
 
 class SignForTrainingSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = TrainerHours
+		model = GymModels.TrainerHours
 		fields = ['member']
 
 	def validate_hourID(self, value):
 		try:
-			hour = TrainerHours.objects.get(id = value)
+			hour = GymModels.TrainerHours.objects.get(id = value)
 		except Exception:
 			raise serializers.ValidationError("Wrong hourID given!")
 
@@ -64,7 +64,7 @@ class SignForTrainingSerializer(serializers.ModelSerializer):
 
 class WorkingHourSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = WorkingHours
+		model = GymModels.WorkingHours
 		fields = '__all__'
 
 class ActiveHoursSerializer(serializers.ModelSerializer):
@@ -72,6 +72,11 @@ class ActiveHoursSerializer(serializers.ModelSerializer):
 	# workingHours = TrainerHoursSerializer(trainerhours_set.all())
 	working = WorkingHourSerializer()
 	class Meta:
-		model = TrainerHours
+		model = GymModels.TrainerHours
 		fields = ['id', 'working']
 
+class GroupTrainingsSerializer(serializers.ModelSerializer):
+	time = WorkingHourSerializer()
+	class Meta:
+		model = GymModels.GroupTraining
+		fields = ('id','training_name', 'time', 'max_people', 'signedPeople')

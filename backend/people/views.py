@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
-from .serializers import TrainerHoursSerializer, ActiveHoursSerializer, SignForTrainingSerializer
+from .serializers import TrainerHoursSerializer, ActiveHoursSerializer, SignForTrainingSerializer, GroupTrainingsSerializer
 from .models import GymMember, Trainer
 from authApp.decorators import allowed_users
 import gym.models as gym
@@ -111,5 +111,17 @@ def signForPersonalTraining(request):
 		return Response(serializer.data)
 	else:
 		return Response(serializer.errors, status=422)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+@allowed_users(allowed_roles=['trainer'])
+def viewGroupTrainings(request):
+	trainer = request.user.trainer
+
+	groupTrainings = trainer.grouptraining_set.all()
+
+	serializer = GroupTrainingsSerializer(groupTrainings, many=True)
+
+	return Response(serializer.data)
 
 
