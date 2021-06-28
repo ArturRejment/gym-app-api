@@ -37,6 +37,7 @@ def apiOverview(request):
 		'/createProduct/': '[Receptionist] allows to create a new product',
 		'/renewMembership/': '[GymMember] allows to renew membership',
 		'/createMembership/': '[Receptionist] allows to create a new membership',
+		'/createGroupTraining/': '[Receptionist] allows to create a new group training',
 	}
 	return Response(context)
 

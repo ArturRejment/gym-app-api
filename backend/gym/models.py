@@ -60,7 +60,7 @@ class ShopProducts(models.Model):
 		return f'{self.product} in {self.shop}'
 
 class GroupTraining(models.Model):
-	training_name = models.CharField(max_length=250, null=False, blank=False)
+	training_name = models.CharField(max_length=250, null=False, blank=False, unique=True)
 	trainer = models.ForeignKey(Trainer, null=False, blank=False, on_delete=models.CASCADE)
 	time = models.ForeignKey(WorkingHours, null=False, blank=False, on_delete=models.CASCADE)
 	max_people = models.IntegerField()
