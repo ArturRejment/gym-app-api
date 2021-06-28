@@ -160,6 +160,17 @@ def viewGroupTrainings(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+@allowed_users(allowed_roles=['receptionist'])
+def createGroupTraining(request):
+	print(request.data)
+	serializer = GymSerializers.GroupTrainingSerializer(data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+		return Response(serializer.data, stauts=200)
+	return Response(serializer.errors, status=422)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['member'])
 def signUpForTraining(request):
 	member = request.user.gymmember

@@ -53,11 +53,39 @@ class ShopProductsSerializer(serializers.ModelSerializer):
 
 class GroupTrainingSerializer(serializers.ModelSerializer):
 	trainer = TrainerSerializerShort()
-	time = WorkingHourSerializer()
+	# time = WorkingHourSerializer()
 
 	class Meta:
 		model = GroupTraining
 		fields = ('id', 'training_name', 'trainer', 'time')
+
+	def validate_trainer(self, value):
+		print(value)
+		try:
+			trainer = Trainer.objects.get(id = value)
+		except Exception:
+			raise serializers.ValidationError('Wrong trainer id!')
+		return value
+
+	def validate_time(self, value):
+		try:
+			time = WorkingHours.objects.get(id = value)
+		except Exception:
+			raise serializers.ValidationError('Wrong time id!')
+		return value
+
+	def create(self, validated_data):
+		trainerID = validated_data.get('trainer')
+		validated_data['trainer'] = Trainer.objects.get(id = trainerID)
+
+		workingId = validated_data.get('time')
+		validated_data['time'] = WorkingHours.objects.get(workingId)
+
+		name = validated_data.get('training_name')
+		name = ut.StripAndCapital(name)
+		validated_data['training_name'] = name
+		return GroupTraining.objects.create(**validated_data)
+
 
 class SignForGroupTrainingSerializer(serializers.ModelSerializer):
 	member = MemberSerializer()

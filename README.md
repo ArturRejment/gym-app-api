@@ -15,6 +15,7 @@ Default hostname and port: http://127.0.0.1:8000
 - `/viewProducts/` [Anyone] returns products currently available in shop specified by id
 - `/viewAllProducts/` [Receptionist] returns all products that can be added to the shop
 - `/activeMemberships/` [Receptionist] returns every member who has active membership
+- `/viewMemberships/` [Anyone] returns all the memberships
 
 ## Valid sufixes for POST Method:
 
@@ -27,6 +28,7 @@ Default hostname and port: http://127.0.0.1:8000
 - `/signForTraining/` [GymMember] allows to sign for group training specified by id
 - `/addProduct/` [Receptionist] allows to add a product to the shop
 - `/renewMembership/` [GymMember] allows to renew membership
+- `/createMembership/` [Receptionst] allows to create new membership
 
 # How to run the server
 
