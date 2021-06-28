@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from people.serializers import UserSerializer, TrainerSerializerShort, WorkingHourSerializer
+from authApp.serializers import AddressSerializer
+import people.serializers as PeopleSerializers
 from .models import *
 import gym.utils as ut
 import datetime
@@ -107,3 +109,9 @@ class MembershipSerializer(serializers.ModelSerializer):
 		validated_data['membership_type'] = name
 
 		return Membership.objects.create(**validated_data)
+
+class ShopSerializer(serializers.ModelSerializer):
+	address = AddressSerializer()
+	class Meta:
+		model = Shop
+		fields = ('id', 'shop_name', 'address')

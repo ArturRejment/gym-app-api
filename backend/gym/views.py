@@ -147,6 +147,18 @@ def addProduct(request):
 	return Response(f'Product {product} added to the shop!')
 
 #!---------------------------------
+#!			   Shop
+#!---------------------------------
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def viewShops(request):
+	shops = GymModels.Shop.objects.all()
+	serializer = GymSerializers.ShopSerializer(shops, many=True)
+
+	return Response(serializer.data)
+
+#!---------------------------------
 #!			Group Trainings
 #!---------------------------------
 
