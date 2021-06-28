@@ -11,7 +11,7 @@ class UserCreateSerializer(UserCreateSerializer):
 class AddressSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Address
-		fields = '__all__'
+		fields = ('country', 'city', 'street', 'postcode')
 
 	def create(self, validated_data):
 		return Address.objects.create(**validated_data)

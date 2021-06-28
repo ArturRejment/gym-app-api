@@ -158,6 +158,21 @@ def viewShops(request):
 
 	return Response(serializer.data)
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+@allowed_users(allowed_roles=['receptionist'])
+def createShop(request):
+
+	address = request.data.get('address')
+
+	name = request.data.get('shop_name')
+
+	serializer = GymSerializers.ShopSerializer(data=request.data)
+	if serializer.is_valid():
+		serializer.save()
+		return Response(serializer.data, status=200)
+	return Response(serializer.errors, status=422)
+
 #!---------------------------------
 #!			Group Trainings
 #!---------------------------------

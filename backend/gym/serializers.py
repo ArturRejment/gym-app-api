@@ -111,7 +111,12 @@ class MembershipSerializer(serializers.ModelSerializer):
 		return Membership.objects.create(**validated_data)
 
 class ShopSerializer(serializers.ModelSerializer):
-	address = AddressSerializer()
+	# address = AddressSerializer()
 	class Meta:
 		model = Shop
 		fields = ('id', 'shop_name', 'address')
+
+	def create(self, validated_data):
+		return Shop.objects.create(
+			**validated_data
+		)
