@@ -25,6 +25,7 @@ def apiOverview(request):
 		'/activeMemberships/': '[Receptionist] returns every member who has active membership',
 		'/trainer/viewGroupTrainings/' : '[Trainer] returns trainer\'s group trainings',
 		'/viewMemberships/': '[Anyone] allows to browse all membership',
+		'/viewShops/': '[Anyone] allows to view all shops',
 		'POST': 'POST Method',
 		'/auth/token/login/': '[Anyone] allows to login for the account - returns auth_token if success',
 		'/auth/users/ [Anyone]': 'allows to register an Gym Member account',
@@ -38,6 +39,7 @@ def apiOverview(request):
 		'/renewMembership/': '[GymMember] allows to renew membership',
 		'/createMembership/': '[Receptionist] allows to create a new membership',
 		'/createGroupTraining/': '[Receptionist] allows to create a new group training',
+		'/createShop/': '[Receptionist] allows to create new shop',
 	}
 	return Response(context)
 
