@@ -10,15 +10,17 @@ urlpatterns = [
 	path('renewMembership/', MembershipView.renewMembership, name="renewMembership"),
 	path('createMembership/', MembershipView.createMembership, name="createMembership"),
 	path('viewMemberships/', MembershipView.viewMemberships, name="viewMemberships"),
+
+	path('product/', ProductView.ProductView.as_view(), name='productView'),
 	path('viewProducts/', ProductView.viewProducts, name='viewProducts'),
-	path('createProduct/', ProductView.createProduct, name='createProduct'),
+	path('addProduct/', ProductView.addProduct, name='addProduct'),
+	path('deleteProduct/', ProductView.deleteProductFromTheShop, name='deleteProduct'),
+
 	path('groupTrainings/', GroupTrainingView.viewGroupTrainings, name='viewGroupTrainings'),
 	path('createGroupTraining/', GroupTrainingView.createGroupTraining, name='createGroupTrainings'),
 	path('signForTraining/', GroupTrainingView.signUpForTraining, name='signForTraining'),
-	path('viewAllProducts/', ProductView.viewAllProducts, name='viewAllProducts'),
-	path('addProduct/', ProductView.addProduct, name='addProduct'),
-	path('deleteProduct/', ProductView.deleteProductFromTheShop, name='deleteProduct'),
+
+	path('shop/', ShopViews.ShopView.as_view(), name="shop"),
 	path('viewShops/', ShopViews.viewShops, name='viewShops'),
 	path('createShop/', ShopViews.createShop, name='createShop'),
-	path('shop/', ShopViews.ShopView.as_view(), name="shop")
 ]
