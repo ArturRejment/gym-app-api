@@ -1,21 +1,24 @@
 from django.urls import path
 from . import views
+import gym.Views.shop as ShopViews
+import gym.Views.product as ProductView
+import gym.Views.membership as MembershipView
+import gym.Views.groupTraining as GroupTrainingView
 
 urlpatterns = [
-	path('activeMemberships/', views.activeMemberships),
-	path('renewMembership/', views.renewMembership, name="renewMembership"),
-	path('createMembership/', views.createMembership, name="createMembership"),
-	path('viewMemberships/', views.viewMemberships, name="viewMemberships"),
-	path('viewProducts/', views.viewProducts, name='viewProducts'),
-	path('createProduct/', views.createProduct, name='createProduct'),
-	path('groupTrainings/', views.viewGroupTrainings, name='viewGroupTrainings'),
-	path('createGroupTraining/', views.createGroupTraining, name='createGroupTrainings'),
-	path('signForTraining/', views.signUpForTraining, name='signForTraining'),
-	path('viewAllProducts/', views.viewAllProducts, name='viewAllProducts'),
-	path('addProduct/', views.addProduct, name='addProduct'),
-	path('deleteProduct/', views.deleteProductFromTheShop, name='deleteProduct'),
-	path('viewShops/', views.viewShops, name='viewShops'),
-	path('createShop/', views.createShop, name='createShop'),
-	path('test', views.test, name='test'),
-	path('shop/', views.ShopView.as_view(), name="shop")
+	path('activeMemberships/', MembershipView.activeMemberships),
+	path('renewMembership/', MembershipView.renewMembership, name="renewMembership"),
+	path('createMembership/', MembershipView.createMembership, name="createMembership"),
+	path('viewMemberships/', MembershipView.viewMemberships, name="viewMemberships"),
+	path('viewProducts/', ProductView.viewProducts, name='viewProducts'),
+	path('createProduct/', ProductView.createProduct, name='createProduct'),
+	path('groupTrainings/', GroupTrainingView.viewGroupTrainings, name='viewGroupTrainings'),
+	path('createGroupTraining/', GroupTrainingView.createGroupTraining, name='createGroupTrainings'),
+	path('signForTraining/', GroupTrainingView.signUpForTraining, name='signForTraining'),
+	path('viewAllProducts/', ProductView.viewAllProducts, name='viewAllProducts'),
+	path('addProduct/', ProductView.addProduct, name='addProduct'),
+	path('deleteProduct/', ProductView.deleteProductFromTheShop, name='deleteProduct'),
+	path('viewShops/', ShopViews.viewShops, name='viewShops'),
+	path('createShop/', ShopViews.createShop, name='createShop'),
+	path('shop/', ShopViews.ShopView.as_view(), name="shop")
 ]
