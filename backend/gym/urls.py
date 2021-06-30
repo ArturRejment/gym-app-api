@@ -15,7 +15,6 @@ urlpatterns = [
 	path('product/', ProductView.ProductView.as_view(), name='productView'),
 	path('product/viewProducts/', ProductView.viewProducts, name='viewProducts'),
 	path('product/addProductToShop/', ProductView.addProduct, name='addProduct'),
-	path('product/deleteProduct/', ProductView.deleteProductFromTheShop, name='deleteProduct'),
 
 	#! Group trainings
 	path('groupTraining/', GroupTrainingView.GroupTrainingView.as_view(), name='viewGroupTrainings'),

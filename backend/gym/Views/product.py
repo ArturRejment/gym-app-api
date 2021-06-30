@@ -44,6 +44,24 @@ class ProductView(APIView):
 			return Response(serializer.data)
 		return Response(serializer.errors, status=422)
 
+	@allowed_users_class(allowed_roles=['receptionist'])
+	def delete(self, request):
+		"""
+		This function allows to delete product from the shop
+
+		Required parameters to send with request:
+		@param1 - shopProduct
+		"""
+		receptionist = request.user.receptionist
+		shopProductId = request.data.get('shopProduct')
+		shopProduct = GymModels.ShopProducts.objects.get(id=shopProductId)
+		shop = shopProduct.shop
+		if shop != receptionist.shop:
+			raise serializers.ValidationError({'Error': 'This product is not in your shop!'})
+		shopProduct.delete()
+		return Response('Product deleted')
+
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -106,21 +124,4 @@ def addProduct(request):
 	)
 	return Response(f'Product {product} added to the shop!')
 
-@api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
-@allowed_users(allowed_roles=['receptionist'])
-def deleteProductFromTheShop(request):
-	"""
-	This function allows to delete product from the shop
 
-	Required parameters to send with request:
-	@param1 - shopProduct
-	"""
-	receptionist = request.user.receptionist
-	shopProductId = request.data.get('shopProduct')
-	shopProduct = GymModels.ShopProducts.objects.get(id=shopProductId)
-	shop = shopProduct.shop
-	if shop != receptionist.shop:
-		raise serializers.ValidationError({'Error': 'This product is not in your shop!'})
-	shopProduct.delete()
-	return Response('Product deleted')

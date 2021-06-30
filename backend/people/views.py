@@ -18,14 +18,19 @@ def apiOverview(request):
 		'GET': 'GET Method',
 		'/auth/users/me/': '[Logged user] returns details about currently logged user',
 		'/trainer/working/': '[Trainer] returns details about trainer working hours',
-		'/viewActiveHours/': '[Anyone] returns available training hours',
-		'/groupTrainings/': '[Anyone] returns available group trainings',
-		'/viewProducts/': '[Anyone] returns products currently available in shop specified by id',
-		'/viewAllProducts/': '[Receptionist] returns all products that can be added to the shop',
-		'/activeMemberships/': '[Receptionist] returns every member who has active membership',
 		'/trainer/viewGroupTrainings/' : '[Trainer] returns trainer\'s group trainings',
-		'/viewMemberships/': '[Anyone] allows to browse all membership',
-		'/viewShops/': '[Anyone] allows to view all shops',
+		'/viewActiveHours/': '[Anyone] returns available training hours',
+
+		'/groupTrainings/': '[Anyone] returns available group trainings',
+
+		'/product/viewProducts/': '[Anyone] returns products currently available in shop specified by id',
+		'/product/': '[Receptionist] returns all products that can be added to the shop',
+
+		'/embership/': '[Anyone] allows to browse all membership',
+		'/membership/activeMemberships/': '[Receptionist] returns every member who has active membership',
+
+		'/shop/': '[Anyone] allows to view all shops',
+
 		'POST': 'POST Method',
 		'/auth/token/login/': '[Anyone] allows to login for the account - returns auth_token if success',
 		'/auth/users/ [Anyone]': 'allows to register an Gym Member account',
@@ -33,15 +38,19 @@ def apiOverview(request):
 		'/auth/createAddress/': '[Anyone] creates an address',
 		'/trainer/updateHour/': '[Trainer] allows to update information about trainer working hour specified by id',
 		'/signForPersonalTraining/': '[GymMember] allows to sign for personal training specified by id',
-		'/signForTraining/': '[GymMember] allows to sign for group training specified by id',
-		'/addProduct/': '[Receptionist] allows to add a product to the shop',
-		'/createProduct/': '[Receptionist] allows to create a new product',
-		'/renewMembership/': '[GymMember] allows to renew membership',
-		'/createMembership/': '[Receptionist] allows to create a new membership',
-		'/createGroupTraining/': '[Receptionist] allows to create a new group training',
-		'/createShop/': '[Receptionist] allows to create new shop',
+
+		'/groupTraining/signForTraining/': '[GymMember] allows to sign for group training specified by id',
+		'/addProductToShop/': '[Receptionist] allows to add a product to the shop',
+		'/product/': '[Receptionist] allows to create a new product',
+
+		'/membership/': '[Receptionist] allows to create a new membership',
+		'/membership/renewMembership/': '[GymMember] allows to renew membership',
+
+		'/groupTraining/': '[Receptionist] allows to create a new group training',
+		'/shop/': '[Receptionist] allows to create new shop',
+
 		'DELETE': 'DELETE Method',
-		'/deleteProduct/': '[Receptionist] allows to delete particular product form the shop',
+		'/product/': '[Receptionist] allows to delete particular product form the shop',
 	}
 	return Response(context)
 
