@@ -146,6 +146,18 @@ def addProduct(request):
 	)
 	return Response(f'Product {product} added to the shop!')
 
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+@allowed_users(allowed_roles=['receptionist'])
+def deleteProductFromTheShop(request):
+	receptionist = request.user.receptionist
+	shopProduct = request.data.get('shopProduct')
+	shop = shopProduct.get('shop')
+	if shop != receptionist.shop:
+		raise serializers.ValidationError({'Error': 'This product is not in your shop!'})
+	shopProduct.delete()
+	return Response('Product deleted')
+
 #!---------------------------------
 #!			   Shop
 #!---------------------------------
