@@ -102,7 +102,7 @@ returns details about trainer working hours
 Parameters send with request:
 - None
 
-## `trainer/viewActiveHours/`
+## `viewActiveHours/`
 - Allowed methods
   - [x] GET
   - [ ] POST
@@ -119,21 +119,55 @@ returns available training hours
 Parameters send with request:
 - None
 
+## `trainer/viewGroupTrainings/`
+- Allowed methods
+  - [x] GET
+  - [ ] POST
+  - [ ] DELETE
 
-- `/viewActiveHours/` [Anyone]
+- Allowed roles
+  - [ ] Member
+  - [x] Trainer
+  - [ ] Receptionist
+
+`GET`
+returns trainer's group trainings
+
+Parameters send with request:
+- None
+
+## `signForPersonalTraining/`
+- Allowed methods
+  - [ ] GET
+  - [x] POST
+  - [ ] DELETE
+
+- Allowed roles
+  - [x] Member
+  - [ ] Trainer
+  - [ ] Receptionist
+
+`POST`
+allows to sign for personal training specified by id
+
+Parameters send with request:
+- trainingID
+
+
+
 - `/groupTrainings/` [Anyone] returns available group trainings
 - `/viewProducts/` [Anyone] returns products currently available in shop specified by id
 - `/viewAllProducts/` [Receptionist] returns all products that can be added to the shop
 - `/activeMemberships/` [Receptionist] returns every member who has active membership
 - `/viewMemberships/` [Anyone] returns all the memberships
 - `/viewShops/` [Anyone] allows to view all shops
-- `/trainer/viewGroupTrainings/` : [Trainer] returns trainer\'s group trainings
+
 
 ## Valid sufixes for POST Method:
 
 - `/auth/createAddress/` [Anyone] creates an address
 - `/trainer/updateHour/` [Trainer] allows to update information about trainer working hour specified by id
-- `/signForPersonalTraining/` [GymMember] allows to sign for personal training specified by id
+- `/signForPersonalTraining/` [GymMember]
 - `/signForTraining/` [GymMember] allows to sign for group training specified by id
 - `/addProduct/` [Receptionist] allows to add a product to the shop
 - `/createProduct/` [Receptionist] allows to create a new product
