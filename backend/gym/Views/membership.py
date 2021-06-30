@@ -7,16 +7,48 @@ import datetime
 
 import gym.models as GymModels
 import gym.serializers as GymSerializers
-from authApp.decorators import allowed_users
+from authApp.decorators import allowed_users, allowed_users_class
 
 #!---------------------------------
 #!			Memberships
 #!---------------------------------
 
+class MembershipView(APIView):
+	permission_classes = [IsAuthenticated]
+
+	def get(self, request):
+		"""
+		Function that allows to view all memberships
+		"""
+		memberships = GymModels.Membership.objects.all()
+		serializer = GymSerializers.MembershipSerializer(memberships, many=True)
+
+		return Response(serializer.data, status=200)
+
+	@allowed_users_class(allowed_roles=['receptionist'])
+	def post(self, request):
+		"""
+		A function that allows to create new membership
+
+		Required parameters to send with request:
+		@param1 - membership_type
+		@param2 - membership_price
+		"""
+		serializer = GymSerializers.MembershipSerializer(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data)
+
+		return Response(serializer.errors, status=422)
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['receptionist'])
 def activeMemberships(request):
+	"""
+	A function that allows to browse all active memberships
+	"""
 	activeMemberships = GymModels.MemberMemberships.objects.filter(expiry_date__gt = datetime.date.today())
 
 	serializer = GymSerializers.ActiveMembershipsSerializer(activeMemberships, many=True)
@@ -26,6 +58,12 @@ def activeMemberships(request):
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['member'])
 def renewMembership(request):
+	"""
+	A function that allows to renew a membership
+
+	Required parameters to send with request:
+	@param1 - membershipID
+	"""
 	member = request.user.gymmember
 	membershipID = request.data.get('membershipID')
 	if member.hasActiveMembership:
@@ -46,21 +84,5 @@ def renewMembership(request):
 
 	return Response('Membership created!')
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-@allowed_users(allowed_roles=['receptionist'])
-def createMembership(request):
-	serializer = GymSerializers.MembershipSerializer(data=request.data)
-	if serializer.is_valid():
-		serializer.save()
-		return Response(serializer.data)
 
-	return Response(serializer.errors, status=422)
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def viewMemberships(request):
-	memberships = GymModels.Membership.objects.all()
-	serializer = GymSerializers.MembershipSerializer(memberships, many=True)
-
-	return Response(serializer.data, status=200)
