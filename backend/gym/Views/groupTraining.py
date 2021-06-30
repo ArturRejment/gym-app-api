@@ -13,28 +13,46 @@ from authApp.decorators import allowed_users
 #!			Group Trainings
 #!---------------------------------
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def viewGroupTrainings(request):
-	trainings = GymModels.GroupTraining.objects.all()
-	serializer = GymSerializers.GroupTrainingSerializer(trainings, many=True)
+class GroupTrainingView(APIView):
+	permission_classes = [IsAuthenticated]
 
-	return Response(serializer.data)
+	def get(self, request):
+		"""
+		Function allows to browse all group trainings
+		"""
+		trainings = GymModels.GroupTraining.objects.all()
+		serializer = GymSerializers.GroupTrainingSerializer(trainings, many=True)
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-@allowed_users(allowed_roles=['receptionist'])
-def createGroupTraining(request):
-	serializer = GymSerializers.CreateGroupTrainingSerializer(data=request.data)
-	if serializer.is_valid():
-		serializer.save()
-		return Response(serializer.data, status=200)
-	return Response(serializer.errors, status=422)
+		return Response(serializer.data)
+
+
+	@allowed_users(allowed_roles=['receptionist'])
+	def post(self, request):
+		"""
+		Function allows to create new group training
+
+		Required parameters to send with request:
+		@param1 - training_name
+		@param2 - trainer
+		@param3 - time
+		@param4 - max_people
+		"""
+		serializer = GymSerializers.CreateGroupTrainingSerializer(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=200)
+		return Response(serializer.errors, status=422)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['member'])
 def signUpForTraining(request):
+	"""
+	Funtion allows to sign up for a group training
+
+	Required parameters to send with request:
+	@param1 - trainingID
+	"""
 	member = request.user.gymmember
 	groupTrainingID = request.data.get('trainingID')
 

@@ -18,9 +18,8 @@ urlpatterns = [
 	path('product/deleteProduct/', ProductView.deleteProductFromTheShop, name='deleteProduct'),
 
 	#! Group trainings
-	path('groupTrainings/', GroupTrainingView.viewGroupTrainings, name='viewGroupTrainings'),
-	path('createGroupTraining/', GroupTrainingView.createGroupTraining, name='createGroupTrainings'),
-	path('signForTraining/', GroupTrainingView.signUpForTraining, name='signForTraining'),
+	path('groupTraining/', GroupTrainingView.GroupTrainingView.as_view(), name='viewGroupTrainings'),
+	path('groupTraining/signForTraining/', GroupTrainingView.signUpForTraining, name='signForTraining'),
 
 	#! Shop
 	path('shop/', ShopViews.ShopView.as_view(), name="shop"),
