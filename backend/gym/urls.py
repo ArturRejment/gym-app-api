@@ -17,4 +17,5 @@ urlpatterns = [
 	path('viewShops/', views.viewShops, name='viewShops'),
 	path('createShop/', views.createShop, name='createShop'),
 	path('test', views.test, name='test'),
+	path('shop/', views.ShopView.as_view(), name="shop")
 ]

@@ -4,9 +4,10 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status, serializers
+from rest_framework.views import APIView
 import datetime
 
-from authApp.decorators import allowed_users
+from authApp.decorators import allowed_users, allowed_users_class
 import gym.serializers as GymSerializers
 import gym.models as GymModels
 
@@ -162,6 +163,28 @@ def deleteProductFromTheShop(request):
 #!---------------------------------
 #!			   Shop
 #!---------------------------------
+
+class ShopView(APIView):
+	permission_classes = [IsAuthenticated]
+
+	@allowed_users_class(allowed_roles=['receptionist'])
+	def get(self, request):
+		shops = GymModels.Shop.objects.all()
+		serializer = GymSerializers.ShopSerializer(shops, many = True)
+		return Response(serializer.data)
+
+	def post(self, request):
+		address = request.data.get('address')
+
+		name = request.data.get('shop_name')
+
+		serializer = GymSerializers.ShopSerializer(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=200)
+		return Response(serializer.errors, status=422)
+
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
