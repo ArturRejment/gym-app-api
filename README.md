@@ -4,31 +4,143 @@ This API provides endpoints from which you can fetch the data for your front-end
 
 # Endpoints
 
-Default hostname and port: http://127.0.0.1:8000
+Default hostname and port: http://127.0.0.1:8000/
 
-## Valid sufixes for GET Method:
+# Authentication
+## `auth/users/me/`
+- Allowed methods
+  - [x] GET
+  - [ ] POST
+  - [ ] DELETE
 
-- `/auth/users/me/` [Logged user] returns details about currently logged user
-- `/trainer/working/` [Trainer] returns details about trainer working hours
-- `/viewActiveHours/` [Anyone] returns available training hours
+- Allowed roles
+  - [x] Member
+  - [x] Trainer
+  - [x] Receptionist
+
+- GET
+Returns deteils about currently logged user
+
+Parameters send with request:
+- None
+
+## `auth/token/login/`
+- Allowed methods
+  - [ ] GET
+  - [x] POST
+  - [ ] DELETE
+
+- Allowed roles
+  - [ ] Member
+  - [ ] Trainer
+  - [ ] Receptionist
+
+- POST
+Allows to login, returns auth_token
+
+Parameters send with request:
+- email
+- password
+
+## `auth/users/`
+- Allowed methods
+  - [x] GET
+  - [x] POST
+  - [ ] DELETE
+
+- Allowed roles
+  - [x] Member
+  - [x] Trainer
+  - [x] Receptionist
+
+`POST`
+Allows to create new member account
+
+Parameters send with request:
+- email
+- password
+
+`GET`
+Returns list of all users
+
+Parameters send with request:
+- None
+
+## `auth/token/logout/`
+- Allowed methods
+  - [ ] GET
+  - [x] POST
+  - [ ] DELETE
+
+- Allowed roles
+  - [x] Member
+  - [x] Trainer
+  - [x] Receptionist
+
+`POST`
+Allows to logout, deletes auth token
+
+Parameters send with request:
+- None
+
+# Trainer
+
+## `trainer/working/`
+- Allowed methods
+  - [x] GET
+  - [ ] POST
+  - [ ] DELETE
+
+- Allowed roles
+  - [ ] Member
+  - [x] Trainer
+  - [ ] Receptionist
+
+`GET`
+returns details about trainer working hours
+
+Parameters send with request:
+- None
+
+## `trainer/viewActiveHours/`
+- Allowed methods
+  - [x] GET
+  - [ ] POST
+  - [ ] DELETE
+
+- Allowed roles
+  - [x] Member
+  - [x] Trainer
+  - [x] Receptionist
+
+`GET`
+returns available training hours
+
+Parameters send with request:
+- None
+
+
+- `/viewActiveHours/` [Anyone]
 - `/groupTrainings/` [Anyone] returns available group trainings
 - `/viewProducts/` [Anyone] returns products currently available in shop specified by id
 - `/viewAllProducts/` [Receptionist] returns all products that can be added to the shop
 - `/activeMemberships/` [Receptionist] returns every member who has active membership
 - `/viewMemberships/` [Anyone] returns all the memberships
+- `/viewShops/` [Anyone] allows to view all shops
+- `/trainer/viewGroupTrainings/` : [Trainer] returns trainer\'s group trainings
 
 ## Valid sufixes for POST Method:
 
-- `/auth/token/login/` [Anyone] allows to login for the account - returns auth_token if success
-- `/auth/users/` [Anyone] allows to register an Gym Member account
-- `/auth/token/logout/` [Logged user] allows to logout
 - `/auth/createAddress/` [Anyone] creates an address
 - `/trainer/updateHour/` [Trainer] allows to update information about trainer working hour specified by id
 - `/signForPersonalTraining/` [GymMember] allows to sign for personal training specified by id
 - `/signForTraining/` [GymMember] allows to sign for group training specified by id
 - `/addProduct/` [Receptionist] allows to add a product to the shop
+- `/createProduct/` [Receptionist] allows to create a new product
 - `/renewMembership/` [GymMember] allows to renew membership
 - `/createMembership/` [Receptionst] allows to create new membership
+- `/createGroupTraining/`: [Receptionist] allows to create a new group training
+- `/createShop/`: [Receptionist] allows to create new shop
 
 # How to run the server
 
