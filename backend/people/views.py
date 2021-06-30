@@ -40,6 +40,8 @@ def apiOverview(request):
 		'/createMembership/': '[Receptionist] allows to create a new membership',
 		'/createGroupTraining/': '[Receptionist] allows to create a new group training',
 		'/createShop/': '[Receptionist] allows to create new shop',
+		'DELETE': 'DELETE Method',
+		'/deleteProduct/': '[Receptionist] allows to delete particular product form the shop',
 	}
 	return Response(context)
 

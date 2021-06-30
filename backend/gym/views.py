@@ -151,8 +151,9 @@ def addProduct(request):
 @allowed_users(allowed_roles=['receptionist'])
 def deleteProductFromTheShop(request):
 	receptionist = request.user.receptionist
-	shopProduct = request.data.get('shopProduct')
-	shop = shopProduct.get('shop')
+	shopProductId = request.data.get('shopProduct')
+	shopProduct = GymModels.ShopProducts.objects.get(id=shopProductId)
+	shop = shopProduct.shop
 	if shop != receptionist.shop:
 		raise serializers.ValidationError({'Error': 'This product is not in your shop!'})
 	shopProduct.delete()
