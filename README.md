@@ -6,6 +6,28 @@ This API provides endpoints from which you can fetch the data for your front-end
   - [View the database](#view-the-database)
 - [Authentication](#Authentication)
   - [`auth/users/me/`](#authusersme)
+  - [`auth/token/login/`](#authtokenlogin)
+  - [`auth/users/`](#authusers)
+  - [`auth/token/logout/`](#authtokenlogout)
+- [Trainer](#Trainer)
+  - [`trainer/working/`](#trainerworking)
+  - [`viewActiveHours/`](#viewactivehours)
+  - [`trainer/viewGroupTrainings/`](#trainerviewgrouptrainings)
+  - [`signForPersonalTraining/`](#signforpersonaltraining)
+- [Shop](#Shop)
+  - ['shop/`](#shop)
+- [Product](#Product)
+  - [`product/`](#product)
+  - [`product/viewProducts`](#productviewproducts)
+  - [`product/addProductToShop`](#productaddproducttoshop)
+- [Membership](#Membership)
+  - [`membership/`](#membership)
+  - [`membership/activeMemberships`](#membershipactivememberships)
+  - [`membership/renewMembership`](#membershiprenewmembership)
+- [Group Training](#Group-training)
+  - [`groupTraining/`](#grouptraining)
+  - [`groupTraining/signForTraining/`](#grouptrainingsignfortraining)
+
 
 # How to run the server
 
@@ -177,27 +199,200 @@ allows to sign for personal training specified by id
 Parameters send with request:
 - trainingID
 
+# Shop
+## `shop/`
+- Allowed methods
+  - [x] GET
+  - [x] POST
+  - [ ] DELETE
+
+- Allowed roles
+  - [ ] Member
+  - [ ] Trainer
+  - [x] Receptionist
+
+`GET`
+allows to view all shops
+
+Parameters send with request:
+- None
+
+`POST`
+allows create a new shop
+
+Parameters send with request:
+- address
+- shop_name
+
+# Product
+## `product/`
+- Allowed methods
+  - [x] GET
+  - [x] POST
+  - [x] DELETE
+
+- Allowed roles
+  - [ ] Member
+  - [ ] Trainer
+  - [x] Receptionist
+
+`GET`
+allows to view all available products in the storage
+
+Parameters send with request:
+- None
+
+`POST`
+allows to create a new product
+
+Parameters send with request:
+- product_name
+- product_price
+- product_weight
+
+`DELETE`
+allows delete particular product
+
+Parameters send with request:
+- shopProduct
+
+## `product/viewProducts`
+- Allowed methods
+  - [x] GET
+  - [ ] POST
+  - [ ] DELETE
+
+- Allowed roles
+  - [x] Member
+  - [x] Trainer
+  - [x] Receptionist
+
+`GET`
+allows to view products available in particular shop
+
+Parameters send with request:
+- shopID
+
+## `product/addProductToShop`
+- Allowed methods
+  - [ ] GET
+  - [x] POST
+  - [ ] DELETE
+
+- Allowed roles
+  - [ ] Member
+  - [ ] Trainer
+  - [x] Receptionist
+
+`POST`
+allows to add product to the shop
+
+Parameters send with request:
+- amount
+- productID
+
+# Membership
+## `membership/`
+- Allowed methods
+  - [x] GET
+  - [x] POST
+  - [ ] DELETE
+
+- Allowed roles
+  - [x] Member (GET)
+  - [x] Trainer (GET)
+  - [x] Receptionist (GET, POST)
+
+`GET`
+allows to browse all the memberships
+
+Parameters send with request:
+- None
+
+`POST`
+allows to create new membership
+Parameters send with request:
+- membership_type
+- membership_price
+
+## `membership/activeMemberships`
+- Allowed methods
+  - [x] GET
+  - [ ] POST
+  - [ ] DELETE
+
+- Allowed roles
+  - [ ] Member
+  - [ ] Trainer
+  - [x] Receptionist
+
+`GET`
+allows to browse all the active memberships
+
+Parameters send with request:
+- None
+
+## `membership/renewMemberships`
+- Allowed methods
+  - [ ] GET
+  - [x] POST
+  - [ ] DELETE
+
+- Allowed roles
+  - [x] Member
+  - [ ] Trainer
+  - [ ] Receptionist
+
+`POST`
+allows to renew membership
+
+Parameters send with request:
+- membershipID
+
+# Group Training
+## `groupTraining/`
+- Allowed methods
+  - [x] GET
+  - [x] POST
+  - [ ] DELETE
+
+- Allowed roles
+  - [x] Member (GET)
+  - [x] Trainer (GET)
+  - [x] Receptionist (GET, POST)
+
+`GET`
+allows to browse all the group trainings
+
+Parameters send with request:
+- None
+
+`POST`
+allows to create new group training
+
+Parameters send with request:
+- training_name
+- trainer
+- time
+- max_people
+
+## `groupTraining/signForTraining`
+- Allowed methods
+  - [ ] GET
+  - [x] POST
+  - [ ] DELETE
+
+- Allowed roles
+  - [x] Member
+  - [ ] Trainer
+  - [ ] Receptionist
+
+`POST`
+allows to sign for group training
+
+Parameters send with request:
+- trainingID
 
 
-- `/groupTrainings/` [Anyone] returns available group trainings
-- `/viewProducts/` [Anyone] returns products currently available in shop specified by id
-- `/viewAllProducts/` [Receptionist] returns all products that can be added to the shop
-- `/activeMemberships/` [Receptionist] returns every member who has active membership
-- `/viewMemberships/` [Anyone] returns all the memberships
-- `/viewShops/` [Anyone] allows to view all shops
-
-
-## Valid sufixes for POST Method:
-
-- `/auth/createAddress/` [Anyone] creates an address
-- `/trainer/updateHour/` [Trainer] allows to update information about trainer working hour specified by id
-- `/signForPersonalTraining/` [GymMember]
-- `/signForTraining/` [GymMember] allows to sign for group training specified by id
-- `/addProduct/` [Receptionist] allows to add a product to the shop
-- `/createProduct/` [Receptionist] allows to create a new product
-- `/renewMembership/` [GymMember] allows to renew membership
-- `/createMembership/` [Receptionst] allows to create new membership
-- `/createGroupTraining/`: [Receptionist] allows to create a new group training
-- `/createShop/`: [Receptionist] allows to create new shop
 
 
