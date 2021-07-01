@@ -5,7 +5,7 @@ This API provides endpoints from which you can fetch the data for your front-end
 - [How to run the server?](#how-to-run-the-server)
   - [View the database](#view-the-database)
 - [Authentication](#Authentication)
-  - [`auth/users/me`](#auth/users/me/)
+  - [`auth/users/me`](#`auth/users/me/`)
 
 # How to run the server
 
