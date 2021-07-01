@@ -2,6 +2,30 @@
 An API for Gym App built with Django and REST Framework. User authentication is provided by Djoser.
 This API provides endpoints from which you can fetch the data for your front-end application.
 
+- [How to run the server?](#how-to-run-the-server)
+  - [View the database](#view-the-database)
+- [Authentication](#Authentication)
+  - [`auth/users/me`](#auth/users/me/)
+
+# How to run the server
+
+- Clone this repo
+- Create virtual environment with command `python -m venv env`
+- Type `env\Scripts\activate.bat` to activate the environment
+- Type `pip install -r requirements.txt` to install all the necessary libs
+- Go to the backend location with `cd backend`
+- Set the database with two commands: `python manage.py makemigrations` and then `python manage.py migrate`
+- Run server with `python manage.py runserver`
+
+## View the database
+If you want to view your database, create a super user and go to the admin page.
+
+- Open directory where is `manage.py` file
+- Create super user with `python manage.py createsuperuser`
+- Provide the required informations like username, email, password etc.
+- Run the server, go to the `http://127.0.0.1:8000/admin` and log in with credentials provided in the previous step
+
+
 # Endpoints
 
 Default hostname and port: http://127.0.0.1:8000/
@@ -176,20 +200,4 @@ Parameters send with request:
 - `/createGroupTraining/`: [Receptionist] allows to create a new group training
 - `/createShop/`: [Receptionist] allows to create new shop
 
-# How to run the server
 
-- Clone this repo
-- Create virtual environment with command `python -m venv env`
-- Type `env\Scripts\activate.bat` to activate the environment
-- Type `pip install -r requirements.txt` to install all the necessary libs
-- Go to the backend location with `cd backend`
-- Set the database with two commands: `python manage.py makemigrations` and then `python manage.py migrate`
-- Run server with `python manage.py runserver`
-
-## View the database
-If you want to view your database, create a super user and go to the admin page.
-
-- Open directory where is `manage.py` file
-- Create super user with `python manage.py createsuperuser`
-- Provide the required informations like username, email, password etc.
-- Run the server, go to the `http://127.0.0.1:8000/admin` and log in with credentials provided in the previous step
