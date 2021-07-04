@@ -3,12 +3,13 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 from rest_framework import status
 
 from .serializers import TrainerHoursSerializer, ActiveHoursSerializer, SignForTrainingSerializer, GroupTrainingsSerializer
 from .models import GymMember, Trainer
-from authApp.decorators import allowed_users
-import gym.models as gym
+from authApp.decorators import allowed_users, allowed_users_class
+import gym.models as GymModels
 
 
 @api_view(['GET'])
@@ -57,6 +58,7 @@ def apiOverview(request):
 #!------------------------------
 #!			Working hours
 #!------------------------------
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -116,7 +118,7 @@ def signForPersonalTraining(request):
 		return Response({'Missing argument': 'Missing required argument \'hourId\''})
 
 	try:
-		training = gym.TrainerHours.objects.get(id=hourID)
+		training = GymModels.TrainerHours.objects.get(id=hourID)
 	except Exception:
 		return Response(f'There is no hour with id {hourID}')
 
