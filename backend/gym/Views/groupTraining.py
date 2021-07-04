@@ -7,7 +7,7 @@ import datetime
 
 import gym.models as GymModels
 import gym.serializers as GymSerializers
-from authApp.decorators import allowed_users
+from authApp.decorators import allowed_users, allowed_users_class
 
 #!---------------------------------
 #!			Group Trainings
@@ -26,7 +26,7 @@ class GroupTrainingView(APIView):
 		return Response(serializer.data)
 
 
-	@allowed_users(allowed_roles=['receptionist'])
+	@allowed_users_class(allowed_roles=['receptionist'])
 	def post(self, request):
 		"""
 		Function allows to create new group training
@@ -42,6 +42,23 @@ class GroupTrainingView(APIView):
 			serializer.save()
 			return Response(serializer.data, status=200)
 		return Response(serializer.errors, status=422)
+
+	@allowed_users_class(allowed_roles=['receptionist'])
+	def delete(self, request):
+		"""
+		Function to delete group training
+
+		Required parameters to send with request:
+		@param1 - trainingID
+		"""
+		trainingID = request.data.get('trainingID')
+		try:
+			training = GymModels.GroupTraining.objects.get(id = trainingID)
+		except Exception as e:
+			raise serializers.ValidationError({"trainingID": e})
+		else:
+			training.delete()
+			return Response("Training deleted successfully")
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
