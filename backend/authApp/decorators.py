@@ -33,7 +33,6 @@ def allowed_users_class(allowed_roles = []):
 
 
             for group in groups:
-                print(group.name)
                 if group.name in allowed_roles:
                     return view_function(self, request, *args, **kwargs)
 

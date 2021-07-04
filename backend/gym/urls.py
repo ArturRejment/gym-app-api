@@ -1,5 +1,4 @@
 from django.urls import path
-from . import views
 import gym.Views.shop as ShopViews
 import gym.Views.product as ProductView
 import gym.Views.membership as MembershipView

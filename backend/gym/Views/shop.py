@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
+from rest_framework import serializers
 
 import gym.models as GymModels
 import gym.serializers as GymSerializers
@@ -41,3 +42,18 @@ class ShopView(APIView):
 			serializer.save()
 			return Response(serializer.data, status=200)
 		return Response(serializer.errors, status=422)
+
+	@allowed_users_class(allowed_roles=['receptionist'])
+	def delete(self, request):
+		"""
+		A function that allows to delete shop managed by receptionist
+		"""
+		receptionist = request.user.receptionist
+		print(receptionist.shop)
+		if receptionist.shop == None:
+			raise serializers.ValidationError("There is no shop owned by this receptionist!")
+
+		shop = GymModels.Shop.objects.get(id=receptionist.shop.id)
+		receptionist.shop = None
+		shop.delete()
+		return Response("Shop deleted successfully")
