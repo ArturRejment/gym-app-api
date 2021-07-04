@@ -24,3 +24,18 @@ class WorkingHoursView(APIView):
 		workingHours = GymModels.WorkingHours.objects.all()
 		serializer = PeopleSerializer.WorkingHourSerializer(workingHours, many=True)
 		return Response(serializer.data)
+
+	@allowed_users_class(allowed_roles=['trainer', 'receptionist'])
+	def post(self, request):
+		"""
+		A function that allows to create new working hour
+
+		Required parameters to send with request:
+		@param1 - start_time
+		@param2 - finish_time
+		"""
+		serializer = PeopleSerializer.WorkingHourSerializer(data=request.data)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=200)
+		return Response(serializer.errors, status=422)
