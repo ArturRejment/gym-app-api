@@ -41,6 +41,23 @@ class MembershipView(APIView):
 
 		return Response(serializer.errors, status=422)
 
+	@allowed_users_class(allowed_roles=['receptionist'])
+	def delete(self, request):
+		"""
+		A function to delete membership
+
+		Required parameters to send with request:
+		@param1 - membershipID
+		"""
+		membershipID = request.data.get('membershipID')
+		try:
+			membership = GymModels.Membership.objects.get(id = membershipID)
+		except Exception as e:
+			raise serializers.ValidationError(e)
+		else:
+			membership.delete()
+			return Response("Membership deleted successfully")
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
