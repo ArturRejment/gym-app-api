@@ -65,7 +65,61 @@ class SignForTrainingSerializer(serializers.ModelSerializer):
 class WorkingHourSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = GymModels.WorkingHours
-		fields = '__all__'
+		fields = ('id', 'start_time', 'finish_time')
+
+	def validate_start_time(self, value):
+		if ":" not in value:
+			raise serializers.ValidationError("Bad format! Expected ':'")
+
+		splitted = value.split(":")
+		if (len(splitted) > 2):
+			raise serializers.ValidationError("Bad format! Too many :")
+
+		hour = splitted[0]
+		minute = splitted[1]
+		if (len(hour) > 2 or len(minute) > 2):
+			raise serializers.ValidationError("Bad format! Too many digits of hours or minutes")
+
+		try:
+			hour = int(hour)
+			minute = int(minute)
+		except Exception as e:
+			raise serializers.ValidationError(e)
+
+		if hour < 0 or hour > 24:
+			raise serializers.ValidationError("Bad format! The hour value is out of range")
+		if minute < 0 or minute > 59:
+			raise serializers.ValidationError("Bad format! The minute value is out of range")
+
+		return value
+
+	def validate_finish_time(self, value):
+		if ":" not in value:
+			raise serializers.ValidationError("Bad format! Expected ':'")
+
+		splitted = value.split(":")
+		if (len(splitted) > 2):
+			raise serializers.ValidationError("Bad format! Too many :")
+
+		hour = splitted[0]
+		minute = splitted[1]
+		if (len(hour) > 2 or len(minute) > 2):
+			raise serializers.ValidationError("Bad format! Too many digits of hours or minutes")
+
+		try:
+			hour = int(hour)
+			minute = int(minute)
+		except Exception as e:
+			raise serializers.ValidationError(e)
+
+		if hour < 0 or hour > 24:
+			raise serializers.ValidationError("Bad format! The hour value is out of range")
+		if minute < 0 or minute > 59:
+			raise serializers.ValidationError("Bad format! The minute value is out of range")
+
+		return value
+
+
 
 class ActiveHoursSerializer(serializers.ModelSerializer):
 	# user = UserSerializer()
