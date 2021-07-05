@@ -3,6 +3,8 @@ def StripAndCapital(text):
 	text = text.split(" ")
 	for word in text:
 		word = word.capitalize()
-		name += word + ' '
+		word = word.strip()
+		if len(word) >= 1:
+			name += word + ' '
 	name = name.strip()
 	return name

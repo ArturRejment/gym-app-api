@@ -68,6 +68,9 @@ class WorkingHourSerializer(serializers.ModelSerializer):
 		fields = ('id', 'start_time', 'finish_time')
 
 	def validate_start_time(self, value):
+		"""
+		Check if the start_time has proper format
+		"""
 		if ":" not in value:
 			raise serializers.ValidationError("Bad format! Expected ':'")
 
@@ -94,6 +97,9 @@ class WorkingHourSerializer(serializers.ModelSerializer):
 		return value
 
 	def validate_finish_time(self, value):
+		"""
+		Check if finish_time has proper format
+		"""
 		if ":" not in value:
 			raise serializers.ValidationError("Bad format! Expected ':'")
 

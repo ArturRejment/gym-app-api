@@ -117,6 +117,12 @@ class ShopSerializer(serializers.ModelSerializer):
 		fields = ('id', 'shop_name', 'address')
 
 	def create(self, validated_data):
+
+		name = validated_data.get('shop_name')
+		name = ut.StripAndCapital(name)
+
+		validated_data['shop_name'] = name
+
 		return Shop.objects.create(
 			**validated_data
 		)
