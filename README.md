@@ -14,8 +14,12 @@ This API provides endpoints from which you can fetch the data for your front-end
   - [`viewActiveHours/`](#viewactivehours)
   - [`trainer/viewGroupTrainings/`](#trainerviewgrouptrainings)
   - [`signForPersonalTraining/`](#signforpersonaltraining)
+- [Working hours](#working-hours)
+  - [`workingHours/`](#workinghours)
+- [Address](#Address)
+  -[`address/`](#address)
 - [Shop](#Shop)
-  - ['shop/`](#shop)
+  - [`shop/`](#shop)
 - [Product](#Product)
   - [`product/`](#product)
   - [`product/viewProducts`](#productviewproducts)
@@ -199,12 +203,55 @@ allows to sign for personal training specified by id
 Parameters send with request:
 - trainingID
 
+# Working hours
+
+## `workingHours/`
+- Allowed methods
+ - [x] GET
+ - [x] POST
+ - [ ] DELETE
+
+- Allowed roles
+  - [ ] Member
+  - [x] Trainer
+  - [x] Receptionist
+
+`GET` allows to browse all working hours
+
+`POST` allows to create new working hour
+Parameters send with request:
+- start_time
+- finish_time
+# Address
+
+## `address/`
+- Allowed methods
+ - [x] GET
+ - [x] POST
+ - [ ] DELETE
+
+- Allowed roles
+  - [x] Member (POST)
+  - [x] Trainer (POST)
+  - [x] Receptionist (POST, GET)
+
+`GET` allows to view all addresses
+Parameters send with request:
+- None
+
+`POST` allows to create new address
+Parameters send with request:
+- country
+- city
+- street
+- postcode
+
 # Shop
 ## `shop/`
 - Allowed methods
   - [x] GET
   - [x] POST
-  - [ ] DELETE
+  - [x] DELETE
 
 - Allowed roles
   - [ ] Member
@@ -223,6 +270,8 @@ allows create a new shop
 Parameters send with request:
 - address
 - shop_name
+
+`DELETE` allows to delete shop managed by logged receptionist
 
 # Product
 ## `product/`
@@ -296,12 +345,12 @@ Parameters send with request:
 - Allowed methods
   - [x] GET
   - [x] POST
-  - [ ] DELETE
+  - [x] DELETE
 
 - Allowed roles
   - [x] Member (GET)
   - [x] Trainer (GET)
-  - [x] Receptionist (GET, POST)
+  - [x] Receptionist (GET, POST, DELETE)
 
 `GET`
 allows to browse all the memberships
@@ -314,6 +363,10 @@ allows to create new membership
 Parameters send with request:
 - membership_type
 - membership_price
+
+`DELETE` allows to delete membership specified by id
+Parameters to send with request:
+- membershipID
 
 ## `membership/activeMemberships`
 - Allowed methods
@@ -354,12 +407,12 @@ Parameters send with request:
 - Allowed methods
   - [x] GET
   - [x] POST
-  - [ ] DELETE
+  - [x] DELETE
 
 - Allowed roles
   - [x] Member (GET)
   - [x] Trainer (GET)
-  - [x] Receptionist (GET, POST)
+  - [x] Receptionist (GET, POST, DELETE)
 
 `GET`
 allows to browse all the group trainings
@@ -375,6 +428,10 @@ Parameters send with request:
 - trainer
 - time
 - max_people
+
+`DELETE` allows to delete group training specified by id
+Parameters send with request:
+- trainingID
 
 ## `groupTraining/signForTraining`
 - Allowed methods
