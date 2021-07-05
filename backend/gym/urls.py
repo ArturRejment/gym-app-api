@@ -6,8 +6,8 @@ import gym.Views.groupTraining as GroupTrainingView
 
 urlpatterns = [
 	#! Memberships
-	path('membership/', MembershipView.MembershipView.as_view(), name="viewMemberships"),
-	path('membership/activeMemberships/', MembershipView.activeMemberships),
+	path('membership/', MembershipView.MembershipView.as_view(), name="viewMembership"),
+	path('membership/activeMemberships/', MembershipView.activeMemberships, name="activeMembership"),
 	path('membership/renewMembership/', MembershipView.renewMembership, name="renewMembership"),
 
 	#! Products
