@@ -26,24 +26,30 @@ class ProductSerializer(serializers.ModelSerializer):
 		fields = ['id', 'product_name', 'product_price', 'product_weight']
 
 	def validate_product_price(self, value):
+		"""
+		Check if product_price is not negative
+		"""
 		if value <= 0:
 			raise serializers.ValidationError('Price cannot be negative!')
 		return value
 
 	def validate_product_weight(self, value):
+		"""
+		Check if product_weight is not neative
+		"""
 		if value <= 0:
 			raise serializers.ValidationError('Weight cannot be negative!')
 		return value
 
 	def create(self, validated_data):
+		"""
+		Strip and capitalize name before creating object
+		"""
 		name = validated_data.get('product_name')
-
 		name = ut.StripAndCapital(name)
 		validated_data['product_name'] = name
 
 		return Product.objects.create(**validated_data)
-
-
 
 
 class ShopProductsSerializer(serializers.ModelSerializer):
@@ -56,8 +62,6 @@ class ShopProductsSerializer(serializers.ModelSerializer):
 class GroupTrainingSerializer(serializers.ModelSerializer):
 	trainer = TrainerSerializerShort()
 	time = WorkingHourSerializer()
-	# time = serializers.IntegerField()
-
 	class Meta:
 		model = GroupTraining
 		fields = ('id', 'training_name', 'trainer', 'time')
@@ -102,10 +106,11 @@ class MembershipSerializer(serializers.ModelSerializer):
 		fields = ['id', 'membership_type', 'membership_price']
 
 	def create(self, validated_data):
+		"""
+		Strip and capitalize membership_type before cration
+		"""
 		type = validated_data.get('membership_type')
-
 		name = ut.StripAndCapital(type)
-
 		validated_data['membership_type'] = name
 
 		return Membership.objects.create(**validated_data)
@@ -117,10 +122,11 @@ class ShopSerializer(serializers.ModelSerializer):
 		fields = ('id', 'shop_name', 'address')
 
 	def create(self, validated_data):
-
+		"""
+		Strip and capitalize shop_name before creation
+		"""
 		name = validated_data.get('shop_name')
 		name = ut.StripAndCapital(name)
-
 		validated_data['shop_name'] = name
 
 		return Shop.objects.create(

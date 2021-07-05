@@ -1,6 +1,7 @@
 from djoser.serializers import UserCreateSerializer, UserSerializer
 from rest_framework import serializers
 from .models import *
+import gym.utils as ut
 
 class UserCreateSerializer(UserCreateSerializer):
 	address = serializers.IntegerField(source='address.id', allow_null=True)
@@ -13,5 +14,36 @@ class AddressSerializer(serializers.ModelSerializer):
 		model = Address
 		fields = ('country', 'city', 'street', 'postcode')
 
+	def validate_postcode(self, value):
+		"""
+		Check the postcode format
+		"""
+		if "-" not in value:
+			raise serializers.ValidationError("Expected -")
+
+		postcode = value.split("-")
+		if len(postcode) > 2:
+			raise serializers.ValidationError("Too many -")
+
+		if len(postcode[0]) != 2 or len(postcode[1]) != 3:
+			raise serializers.ValidationError("Bad postcode format")
+
+		try:
+			int(postcode[0])
+			int(postcode[1])
+		except Exception as e:
+			raise serializers.ValidationError("Poscode should consist of integer values separated with -")
+
+		return value
+
 	def create(self, validated_data):
+		"""
+		Strip and capitalize country, city and street before creation
+		"""
+		strip = lambda x: ut.StripAndCapital(validated_data.get(x))
+
+		validated_data['street'] = strip('street')
+		validated_data['country'] = strip('country')
+		validated_data['city'] = strip('city')
+
 		return Address.objects.create(**validated_data)
