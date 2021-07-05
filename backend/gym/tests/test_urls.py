@@ -2,6 +2,8 @@ from django.test import SimpleTestCase
 from django.urls import reverse, resolve
 import gym.Views.membership as memb
 import gym.Views.product as prod
+import gym.Views.groupTraining as groupT
+import gym.Views.shop as shop
 
 class TestMembershipUrls(SimpleTestCase):
 
@@ -30,3 +32,19 @@ class TestProductUrls(SimpleTestCase):
 	def test_add_product(self):
 		url = reverse('addProduct')
 		self.assertEquals(resolve(url).func, prod.addProduct)
+
+class TestGroupTrainingUrls(SimpleTestCase):
+
+	def test_group_training(self):
+		url = reverse('viewGroupTrainings')
+		self.assertEquals(resolve(url).func.view_class, groupT.GroupTrainingView)
+
+	def test_sign_group_training(self):
+		url = reverse('signForTraining')
+		self.assertEquals(resolve(url).func, groupT.signUpForTraining)
+
+class TestShopUrls(SimpleTestCase):
+
+	def test_shop(self):
+		url = reverse('shop')
+		self.assertEquals(resolve(url).func.view_class, shop.ShopView)
