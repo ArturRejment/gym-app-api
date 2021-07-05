@@ -120,6 +120,27 @@ class WorkingHourSerializer(serializers.ModelSerializer):
 		return value
 
 
+	def validate(self, data):
+		"""
+		Check if the start is before finish
+		"""
+		super().validate(data)
+		start = data.get('start_time')
+		finish = data.get('finish_time')
+
+		start = start.split(":")
+		finish = finish.split(":")
+
+		if int(start[0]) > int(finish[0]):
+			raise serializers.ValidationError("Finish must occur after start")
+		if int(start[0]) == int(finish[0]):
+			if int(start[1]) > int(finish[1]):
+				raise serializers.ValidationError("Finish must occur after start")
+
+		return data
+
+
+
 
 class ActiveHoursSerializer(serializers.ModelSerializer):
 	# user = UserSerializer()
