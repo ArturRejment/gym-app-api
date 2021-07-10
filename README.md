@@ -17,7 +17,7 @@ This API provides endpoints from which you can fetch the data for your front-end
 - [Working hours](#working-hours)
   - [`workingHours/`](#workinghours)
 - [Address](#Address)
-  -[`address/`](#address)
+  - [`address/`](#address)
 - [Shop](#Shop)
   - [`shop/`](#shop)
 - [Product](#Product)
