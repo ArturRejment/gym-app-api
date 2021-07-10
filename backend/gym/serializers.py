@@ -119,7 +119,7 @@ class ShopSerializer(serializers.ModelSerializer):
 	# address = AddressSerializer()
 	class Meta:
 		model = Shop
-		fields = ('id', 'shop_name', 'address')
+		fields = ['id', 'shop_name', 'address']
 
 	def create(self, validated_data):
 		"""
