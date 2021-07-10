@@ -112,8 +112,8 @@ class TestProperties(TestCase):
 		""" Testing hasActiveMembership property """
 
 		# At the beginning noone should have active membership
-		self.assertEquals(self.member1.hasActiveMembership, False)
-		self.assertEquals(self.member2.hasActiveMembership, False)
+		self.assertFalse(self.member1.hasActiveMembership)
+		self.assertFalse(self.member2.hasActiveMembership)
 
 		# Renew membership for member1
 		st_date = datetime.date.today()
@@ -125,8 +125,8 @@ class TestProperties(TestCase):
 		)
 
 		# Only member1 should have active membership
-		self.assertEquals(self.member1.hasActiveMembership, True)
-		self.assertEquals(self.member2.hasActiveMembership, False)
+		self.assertTrue(self.member1.hasActiveMembership)
+		self.assertFalse(self.member2.hasActiveMembership)
 
 		# Renew membership for member2
 		newMemberMembership = GymModels.MemberMemberships.objects.create(
@@ -136,5 +136,29 @@ class TestProperties(TestCase):
 		)
 
 		# Both member1 and mamber2 should have active memberships
-		self.assertEquals(self.member1.hasActiveMembership, True)
-		self.assertEquals(self.member2.hasActiveMembership, True)
+		self.assertTrue(self.member1.hasActiveMembership)
+		self.assertTrue(self.member2.hasActiveMembership)
+
+	def test_signedPeople_property(self):
+		""" Testing signedPeople property """
+
+		self.assertEquals(self.group_training.signedPeople, 0)
+
+		GymModels.GroupTrainingSchedule.objects.create(
+			group_training=self.group_training,
+			member=self.member1
+		)
+
+		self.assertEquals(self.group_training.signedPeople, 1)
+
+		GymModels.GroupTrainingSchedule.objects.create(
+			group_training=self.group_training,
+			member=self.member2
+		)
+
+		self.assertEquals(self.group_training.signedPeople, 2)
+
+		GymModels.GroupTrainingSchedule.objects.last().delete()
+
+		self.assertEquals(self.group_training.signedPeople, 1)
+
