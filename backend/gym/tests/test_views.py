@@ -101,23 +101,28 @@ class TestOpenAccessViews(APITestCase):
 			}
 		)
 
+
 		self.token = token_resp.data.get('auth_token')
-		self.client.defaults['Authorization'] = 'Token ' + self.token
 
 	"""! Testing in progress """
 	# def test_view_active_hours(self):
+	# 	reqClient = APIClient()
+	# 	reqClient.credentials(HTTP_AUTHORIZATION='Token '+self.token)
+	# 	reqClient.defaults['HTTP_AUTHORIZATION'] = 'Token ' + self.token
+
 	# 	auth_token = f'Token {self.token}'
 	# 	auth_headers = {
-	# 		'Content-Type':'application/json',
+	# 		# 'Content-Type':'application/json',
 	# 		'Accept': '*/*',
 	# 		'Connection': 'keep-alive',
-	# 		'Authorization': f'Token {self.token}'
+	# 		'HTTP_AUTHORIZATION': 'Token ' + self.token
 	# 	}
-
 	# 	print(auth_token)
 	# 	print(Token.objects.all())
-	# 	response = self.client.get(
-	# 		'/shop/',
+	# 	response = reqClient.get(
+	# 		'http://127.0.0.1:8000/shop/',
+	# 		json={},
+	# 		headers=auth_headers
 	# 	)
 	# 	print(self.token)
-	# 	print(response.data)
+	# 	print(response)
