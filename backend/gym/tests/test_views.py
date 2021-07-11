@@ -96,22 +96,28 @@ class TestOpenAccessViews(APITestCase):
 				'email': 'test@gmail.com',
 				'password': 'StronGPassHeRo78423'
 			},
-			headres={
+			headers={
 				'Content-Type':'application/x-www-form-urlencoded'
 			}
 		)
 
 		self.token = token_resp.data.get('auth_token')
+		self.client.defaults['Authorization'] = 'Token ' + self.token
 
-	def test_view_active_hours(self):
-		auth = {
-			'Authorization': f'Token {self.token}'
-		}
+	"""! Testing in progress """
+	# def test_view_active_hours(self):
+	# 	auth_token = f'Token {self.token}'
+	# 	auth_headers = {
+	# 		'Content-Type':'application/json',
+	# 		'Accept': '*/*',
+	# 		'Connection': 'keep-alive',
+	# 		'Authorization': f'Token {self.token}'
+	# 	}
 
-		print(Token.objects.all())
-		response = self.client.get(
-			'/viewActiveHours/',
-			headers=auth
-		)
-		print(self.token)
-		print(response)
+	# 	print(auth_token)
+	# 	print(Token.objects.all())
+	# 	response = self.client.get(
+	# 		'/shop/',
+	# 	)
+	# 	print(self.token)
+	# 	print(response.data)
