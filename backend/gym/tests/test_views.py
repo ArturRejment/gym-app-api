@@ -7,7 +7,7 @@ import gym.models as GymModels
 from authApp.models import Address
 import json
 
-class TestViews(APITestCase):
+class TestAuthenticationViews(APITestCase):
 
 	def setUp(self):
 		self.address = Address.objects.create(
@@ -21,9 +21,9 @@ class TestViews(APITestCase):
 		)
 
 
-	def test_shop_view_GET(self):
+	def test_member_sign_up(self):
 
-		# Create new user
+		#! Create new user
 		response = self.client.post(
 			'/auth/users/',
 			{
@@ -42,6 +42,21 @@ class TestViews(APITestCase):
 		)
 		# Check if user was created
 		self.assertEquals(response.status_code, 201)
+
+		#! Login created user with credentials
+		response = self.client.post(
+			'/auth/token/login/',
+			{
+				'email': 'test@gmail.com',
+				'password': 'StronGPassHeRo78423'
+			},
+			headres={
+				'Content-Type':'application/x-www-form-urlencoded'
+			}
+		)
+		# Check if user could login
+		self.assertEquals(response.status_code, 200)
+		self.assertNotEquals(response.data.get('auth_token'), None)
 
 
 
