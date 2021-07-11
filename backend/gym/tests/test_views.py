@@ -8,6 +8,7 @@ from authApp.models import Address
 import json
 
 class TestAuthenticationViews(APITestCase):
+	""" Testing Authentication with API Views """
 
 	def setUp(self):
 		self.address = Address.objects.create(
@@ -59,4 +60,58 @@ class TestAuthenticationViews(APITestCase):
 		self.assertNotEquals(response.data.get('auth_token'), None)
 
 
+class TestOpenAccessViews(APITestCase):
+	""" Test some open-access views
+		Views that can be accessed by anyone who is authenticated """
 
+	def setUp(self):
+		self.address = Address.objects.create(
+			country='Poland',
+			city='Honolulu',
+			street='Ladna 5',
+			postcode='15-223',
+		)
+		Group.objects.create(
+			name='member'
+		)
+		self.client.post(
+			'/auth/users/',
+			{
+				'username': 'test',
+				'email': 'test@gmail.com',
+				'password': 'StronGPassHeRo78423',
+				're_password': 'StronGPassHeRo78423',
+				'phone': '123456789',
+				'first_name': 'test',
+				'last_name': 'testing',
+				'address': self.address,
+			},
+			headers={
+				'Content-Type':'application/x-www-form-urlencoded'
+			},
+		)
+		token_resp = self.client.post(
+			'/auth/token/login/',
+			{
+				'email': 'test@gmail.com',
+				'password': 'StronGPassHeRo78423'
+			},
+			headres={
+				'Content-Type':'application/x-www-form-urlencoded'
+			}
+		)
+
+		self.token = token_resp.data.get('auth_token')
+
+	def test_view_active_hours(self):
+		auth = {
+			'Authorization': f'Token {self.token}'
+		}
+
+		print(Token.objects.all())
+		response = self.client.get(
+			'/viewActiveHours/',
+			headers=auth
+		)
+		print(self.token)
+		print(response)
