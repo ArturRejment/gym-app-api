@@ -6,6 +6,7 @@ from django.contrib.auth.models import Group
 import gym.models as GymModels
 from authApp.models import Address
 import json
+import coreapi
 
 class TestAuthenticationViews(APITestCase):
 	""" Testing Authentication with API Views """
@@ -65,12 +66,18 @@ class TestOpenAccessViews(APITestCase):
 		Views that can be accessed by anyone who is authenticated """
 
 	def setUp(self):
+
 		self.address = Address.objects.create(
 			country='Poland',
 			city='Honolulu',
 			street='Ladna 5',
 			postcode='15-223',
 		)
+		shop = GymModels.Shop.objects.create(
+			shop_name="Gym Fit Shop",
+			address = self.address
+		)
+		self.shop_id = shop.id
 		Group.objects.create(
 			name='member'
 		)
@@ -101,19 +108,44 @@ class TestOpenAccessViews(APITestCase):
 			}
 		)
 
-
+		# Save auth token
 		self.token = token_resp.data.get('auth_token')
+
+		# Set generated token as default authentication credentials
+		self.requestClient = APIClient()
+		self.client.defaults['HTTP_AUTHORIZATION'] = 'Token ' + self.token
 
 
 	def test_view_membership_GET(self):
-		reqClient = APIClient()
-		reqClient.defaults['HTTP_AUTHORIZATION'] = 'Token ' + self.token
+		""" Testing membership view using APIClient
+			by sending get request to the /membership url """
+
 
 		"""! There is no need to send the headers
 			just change default HTTP_AUTHORIZATION """
-		response = reqClient.get(
+		response = self.client.get(
 			'http://127.0.0.1:8000/membership/',
 			json={}
 		)
 
 		self.assertEquals(response.status_code, 200)
+
+	""" In progress """
+	# def test_view_view_products(self):
+	# 	""" Testing viewProducts view using APIClient
+	# 	by sending get request to the /product/viewProducts/ url """
+
+	# 	self.client.defaults['Content-Type'] = 'application/x-www-form-urlencoded'
+
+	# 	response1 = self.client.get(
+	# 		'/product/viewProducts/',
+	# 		{
+	# 			'shopID': self.shop_id
+	# 		},
+
+	# 	)
+	# 	print(response1.data)
+	# 	self.assertEquals(response1.status_code, 200)
+
+
+

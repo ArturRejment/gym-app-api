@@ -73,6 +73,7 @@ def viewProducts(request):
 	@param1 - shopID
 	"""
 	shopID = request.data.get('shopID')
+	print(shopID)
 	try:
 		shop = GymModels.Shop.objects.get(id = shopID)
 	except Exception:
