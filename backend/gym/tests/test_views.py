@@ -127,8 +127,22 @@ class TestOpenAccessViews(APITestCase):
 			'http://127.0.0.1:8000/membership/',
 			json={}
 		)
+		self.assertEquals(response.status_code, 200)
+		self.assertEquals(len(list(response.data)), 0)
+
+
+		membership = GymModels.Membership.objects.create(
+			membership_type="Open 24",
+			membership_price=150
+		)
+		response = self.client.get(
+			'http://127.0.0.1:8000/membership/',
+			json={}
+		)
 
 		self.assertEquals(response.status_code, 200)
+		self.assertEquals(len(list(response.data)), 1)
+
 
 	""" In progress """
 	# def test_view_view_products(self):
