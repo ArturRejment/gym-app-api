@@ -152,10 +152,13 @@ class TestOpenAccessViews(APITestCase):
 	# 	self.client.defaults['Content-Type'] = 'application/x-www-form-urlencoded'
 
 	# 	response1 = self.client.get(
-	# 		'/product/viewProducts/',
-	# 		{
-	# 			'shopID': self.shop_id
+	# 		'http://127.0.0.1:8000/product/viewProducts/',
+	# 		data={
+	# 			'shopID': 155
 	# 		},
+	# 		headers={
+	# 			'Content-Type':'application/x-www-form-urlencoded'
+	# 		}
 
 	# 	)
 	# 	print(response1.data)
