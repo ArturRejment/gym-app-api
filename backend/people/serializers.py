@@ -28,7 +28,7 @@ class TrainerHoursSerializer(serializers.ModelSerializer):
 		try:
 			member = GymMember.objects.get(id=value)
 		except:
-			raise serializers.ValidationError("Wrong member id given!")
+			raise serializers.ValidationError("Wrong member id given!", code=422)
 		return value
 
 	def update(self, instance, validated_data):
@@ -52,7 +52,7 @@ class SignForTrainingSerializer(serializers.ModelSerializer):
 		try:
 			hour = GymModels.TrainerHours.objects.get(id = value)
 		except Exception:
-			raise serializers.ValidationError("Wrong hourID given!")
+			raise serializers.ValidationError("Wrong hourID given!", code=422)
 
 	def update(self, instance, validated_data):
 		ident = validated_data.get('member', instance.member)
@@ -72,27 +72,27 @@ class WorkingHourSerializer(serializers.ModelSerializer):
 		Check if the start_time has proper format
 		"""
 		if ":" not in value:
-			raise serializers.ValidationError("Bad format! Expected ':'")
+			raise serializers.ValidationError("Bad format! Expected ':'", code=422)
 
 		splitted = value.split(":")
 		if (len(splitted) > 2):
-			raise serializers.ValidationError("Bad format! Too many :")
+			raise serializers.ValidationError("Bad format! Too many :", code=422)
 
 		hour = splitted[0]
 		minute = splitted[1]
 		if (len(hour) > 2 or len(minute) > 2):
-			raise serializers.ValidationError("Bad format! Too many digits of hours or minutes")
+			raise serializers.ValidationError("Bad format! Too many digits of hours or minutes", code=422)
 
 		try:
 			hour = int(hour)
 			minute = int(minute)
 		except Exception as e:
-			raise serializers.ValidationError(e)
+			raise serializers.ValidationError(e, code=422)
 
 		if hour < 0 or hour > 24:
-			raise serializers.ValidationError("Bad format! The hour value is out of range")
+			raise serializers.ValidationError("Bad format! The hour value is out of range", code=422)
 		if minute < 0 or minute > 59:
-			raise serializers.ValidationError("Bad format! The minute value is out of range")
+			raise serializers.ValidationError("Bad format! The minute value is out of range", code=422)
 
 		return value
 
@@ -101,27 +101,27 @@ class WorkingHourSerializer(serializers.ModelSerializer):
 		Check if finish_time has proper format
 		"""
 		if ":" not in value:
-			raise serializers.ValidationError("Bad format! Expected ':'")
+			raise serializers.ValidationError("Bad format! Expected ':'", code=422)
 
 		splitted = value.split(":")
 		if (len(splitted) > 2):
-			raise serializers.ValidationError("Bad format! Too many :")
+			raise serializers.ValidationError("Bad format! Too many :", code=422)
 
 		hour = splitted[0]
 		minute = splitted[1]
 		if (len(hour) > 2 or len(minute) > 2):
-			raise serializers.ValidationError("Bad format! Too many digits of hours or minutes")
+			raise serializers.ValidationError("Bad format! Too many digits of hours or minutes", code=422)
 
 		try:
 			hour = int(hour)
 			minute = int(minute)
 		except Exception as e:
-			raise serializers.ValidationError(e)
+			raise serializers.ValidationError(e, code=422)
 
 		if hour < 0 or hour > 24:
-			raise serializers.ValidationError("Bad format! The hour value is out of range")
+			raise serializers.ValidationError("Bad format! The hour value is out of range", code=422)
 		if minute < 0 or minute > 59:
-			raise serializers.ValidationError("Bad format! The minute value is out of range")
+			raise serializers.ValidationError("Bad format! The minute value is out of range", code=422)
 
 		return value
 
@@ -138,10 +138,10 @@ class WorkingHourSerializer(serializers.ModelSerializer):
 		finish = finish.split(":")
 
 		if int(start[0]) > int(finish[0]):
-			raise serializers.ValidationError("Finish must occur after start")
+			raise serializers.ValidationError("Finish must occur after start", code=422)
 		if int(start[0]) == int(finish[0]):
 			if int(start[1]) > int(finish[1]):
-				raise serializers.ValidationError("Finish must occur after start")
+				raise serializers.ValidationError("Finish must occur after start", code=422)
 
 		return data
 

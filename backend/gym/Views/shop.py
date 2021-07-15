@@ -51,7 +51,7 @@ class ShopView(APIView):
 		receptionist = request.user.receptionist
 		print(receptionist.shop)
 		if receptionist.shop == None:
-			raise serializers.ValidationError("There is no shop owned by this receptionist!")
+			raise serializers.ValidationError("There is no shop owned by this receptionist!", code=422)
 
 		shop = GymModels.Shop.objects.get(id=receptionist.shop.id)
 		receptionist.shop = None

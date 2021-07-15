@@ -55,7 +55,7 @@ class GroupTrainingView(APIView):
 		try:
 			training = GymModels.GroupTraining.objects.get(id = trainingID)
 		except Exception as e:
-			raise serializers.ValidationError({"trainingID": e})
+			raise serializers.ValidationError({"trainingID": e}, code=422)
 		else:
 			training.delete()
 			return Response("Training deleted successfully")
@@ -76,15 +76,15 @@ def signUpForTraining(request):
 	try:
 		groupTraining = GymModels.GroupTraining.objects.get(id=groupTrainingID)
 	except Exception:
-		raise serializers.ValidationError({'Group Training': [f'There is no group training with id {groupTrainingID}']})
+		raise serializers.ValidationError({'Group Training': [f'There is no group training with id {groupTrainingID}']}, code=422)
 
 	if groupTraining.signedPeople >= groupTraining.max_people:
-		raise serializers.ValidationError({'Error': 'There is already maximum number of people signed for this training'})
+		raise serializers.ValidationError({'Error': 'There is already maximum number of people signed for this training'}, code=422)
 
 	trainSet = groupTraining.grouptrainingschedule_set.all()
 	for i, schedule in enumerate(trainSet):
 		if trainSet[i].member == member:
-			raise serializers.ValidationError({'Error': ['You are alredy signed for this training!']})
+			raise serializers.ValidationError({'Error': ['You are alredy signed for this training!']}, code=422)
 
 	newSchedule = GymModels.GroupTrainingSchedule.objects.create(
 		member=member,

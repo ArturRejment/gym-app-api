@@ -53,7 +53,7 @@ class MembershipView(APIView):
 		try:
 			membership = GymModels.Membership.objects.get(id = membershipID)
 		except Exception as e:
-			raise serializers.ValidationError(e)
+			raise serializers.ValidationError(e, code=422)
 		else:
 			membership.delete()
 			return Response("Membership deleted successfully")
@@ -84,11 +84,11 @@ def renewMembership(request):
 	member = request.user.gymmember
 	membershipID = request.data.get('membershipID')
 	if member.hasActiveMembership:
-		raise serializers.ValidationError({'Member':'Member already has active membership'})
+		raise serializers.ValidationError({'Member':'Member already has active membership'}, code=422)
 	try:
 		membership = GymModels.Membership.objects.get(id=membershipID)
 	except Exception:
-		raise serializers.ValidationError({'Membership':f'Membership with id {membershipID} does not exist!'})
+		raise serializers.ValidationError({'Membership':f'Membership with id {membershipID} does not exist!'}, code=422)
 
 	st_date = datetime.date.today()
 	end_date = st_date + datetime.timedelta(days=+30)

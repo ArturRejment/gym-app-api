@@ -57,7 +57,7 @@ class ProductView(APIView):
 		shopProduct = GymModels.ShopProducts.objects.get(id=shopProductId)
 		shop = shopProduct.shop
 		if shop != receptionist.shop:
-			raise serializers.ValidationError({'Error': 'This product is not in your shop!'})
+			raise serializers.ValidationError({'Error': 'This product is not in your shop!'}, code=422)
 		shopProduct.delete()
 		return Response('Product deleted')
 
@@ -77,7 +77,7 @@ def viewProducts(request):
 	try:
 		shop = GymModels.Shop.objects.get(id = shopID)
 	except Exception:
-		raise serializers.ValidationError({"ShopID":[f'There is no shop with id {shopID}']})
+		raise serializers.ValidationError({"ShopID":[f'There is no shop with id {shopID}']}, code=422)
 
 	products = shop.shopproducts_set.all()
 
@@ -100,23 +100,23 @@ def addProduct(request):
 	amount = request.data.get('amount')
 	productID = request.data.get('productID')
 	if amount == None:
-		raise serializers.ValidationError('Please specify the amount')
+		raise serializers.ValidationError('Please specify the amount', code=422)
 
 	print(receptionist.shop)
 	try:
 		shop = GymModels.Shop.objects.get(id = receptionist.shop.id)
 	except Exception:
-		raise serializers.ValidationError('You have no privileges to manage any shops!')
+		raise serializers.ValidationError('You have no privileges to manage any shops!', code=422)
 
 	try:
 		product = GymModels.Product.objects.get(id = productID)
 	except Exception:
-		raise serializers.ValidationError(f'Product with id {productID} does not exists!')
+		raise serializers.ValidationError(f'Product with id {productID} does not exists!', code=422)
 
 	shopProducts = shop.shopproducts_set.all()
 	for i, prod in enumerate(shopProducts):
 		if shopProducts[i].product == product:
-			raise serializers.ValidationError(f'Product {product} already exists in this shop!')
+			raise serializers.ValidationError(f'Product {product} already exists in this shop!', code=422)
 
 	newProduct = GymModels.ShopProducts.objects.create(
 		shop=shop,

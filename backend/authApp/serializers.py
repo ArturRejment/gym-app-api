@@ -14,9 +14,9 @@ class UserCreateSerializer(UserCreateSerializer):
 		Check the email format
 		"""
 		if "@" not in value:
-			raise serializers.ValidationError("Email should contain @")
+			raise serializers.ValidationError("Email should contain @", code=422)
 		if "." not in value:
-			raise serializers.ValidationError("Email should contain @")
+			raise serializers.ValidationError("Email should contain @", code=422)
 
 	def create(self, validated_data):
 		"""
@@ -39,14 +39,14 @@ class AddressSerializer(serializers.ModelSerializer):
 		Check the postcode format
 		"""
 		if "-" not in value:
-			raise serializers.ValidationError("Expected -")
+			raise serializers.ValidationError("Expected -", code=422)
 
 		postcode = value.split("-")
 		if len(postcode) > 2:
-			raise serializers.ValidationError("Too many -")
+			raise serializers.ValidationError("Too many -", code=422)
 
 		if len(postcode[0]) != 2 or len(postcode[1]) != 3:
-			raise serializers.ValidationError("Bad postcode format")
+			raise serializers.ValidationError("Bad postcode format", code=422)
 
 		try:
 			int(postcode[0])

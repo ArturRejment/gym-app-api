@@ -30,7 +30,7 @@ class ProductSerializer(serializers.ModelSerializer):
 		Check if product_price is not negative
 		"""
 		if value <= 0:
-			raise serializers.ValidationError('Price cannot be negative!')
+			raise serializers.ValidationError('Price cannot be negative!', code=422)
 		return value
 
 	def validate_product_weight(self, value):
@@ -38,7 +38,7 @@ class ProductSerializer(serializers.ModelSerializer):
 		Check if product_weight is not neative
 		"""
 		if value <= 0:
-			raise serializers.ValidationError('Weight cannot be negative!')
+			raise serializers.ValidationError('Weight cannot be negative!', code=422)
 		return value
 
 	def create(self, validated_data):
@@ -95,7 +95,7 @@ class SignForGroupTrainingSerializer(serializers.ModelSerializer):
 		try:
 			groupTraining = GroupTraining.objects.get(id = value)
 		except Exception:
-			raise serializers.ValidationError('Invalid group training id!')
+			raise serializers.ValidationError('Invalid group training id!', code=422)
 
 	def save(self, validated_data):
 		return GroupTrainingSchedule.objects.create(**validated_data)
