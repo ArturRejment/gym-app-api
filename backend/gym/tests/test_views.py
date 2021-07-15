@@ -108,12 +108,24 @@ class TestOpenAccessViews(APITestCase):
 			}
 		)
 
+
 		# Save auth token
 		self.token = token_resp.data.get('auth_token')
 
 		# Set generated token as default authentication credentials
 		self.requestClient = APIClient()
 		self.client.defaults['HTTP_AUTHORIZATION'] = 'Token ' + self.token
+
+		resp = self.client.get(
+			'/product/viewProducts/',
+			{
+				'shopID': shop.id,
+			},
+			headers={
+				'Content-Type':'application/x-www-form-urlencoded'
+			}
+		)
+		print(resp)
 
 
 	def test_view_membership_GET(self):
