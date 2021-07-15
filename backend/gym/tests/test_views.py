@@ -97,6 +97,7 @@ class TestOpenAccessViews(APITestCase):
 				'Content-Type':'application/x-www-form-urlencoded'
 			},
 		)
+
 		token_resp = self.client.post(
 			'/auth/token/login/',
 			{
@@ -116,17 +117,22 @@ class TestOpenAccessViews(APITestCase):
 		self.requestClient = APIClient()
 		self.client.defaults['HTTP_AUTHORIZATION'] = 'Token ' + self.token
 
-		resp = self.client.get(
-			'/product/viewProducts/',
+
+	def test_view_address_POST(self):
+		""" Testing address creation using API view """
+
+		response = self.client.post(
+			'/auth/address/',
 			{
-				'shopID': shop.id,
+				'country': 'Testing',
+				'city': 'Testing',
+				'street': 'Testing',
+				'postcode': 'Testing',
 			},
 			headers={
 				'Content-Type':'application/x-www-form-urlencoded'
 			}
 		)
-		print(resp)
-
 
 	def test_view_membership_GET(self):
 		""" Testing membership view using APIClient
