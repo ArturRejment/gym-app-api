@@ -52,7 +52,7 @@ class AddressSerializer(serializers.ModelSerializer):
 			int(postcode[0])
 			int(postcode[1])
 		except Exception as e:
-			raise serializers.ValidationError("Poscode should consist of integer values separated with -")
+			raise serializers.ValidationError("Poscode should consist of integer values separated with -", code=422)
 
 		return value
 

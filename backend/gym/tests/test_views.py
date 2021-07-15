@@ -124,15 +124,36 @@ class TestOpenAccessViews(APITestCase):
 		response = self.client.post(
 			'/auth/address/',
 			{
-				'country': 'Testing',
-				'city': 'Testing',
-				'street': 'Testing',
-				'postcode': 'Testing',
+				'country': 'PolAnd',
+				'city': '   OpoLe',
+				'street': 'TeSTIng   ',
+				'postcode': '47-224',
 			},
 			headers={
 				'Content-Type':'application/x-www-form-urlencoded'
 			}
 		)
+
+		self.assertEquals(response.status_code, 200)
+		self.assertEquals(response.data.get('country'), 'Poland')
+		self.assertEquals(response.data.get('street'), 'Testing')
+		self.assertEquals(response.data.get('city'), 'Opole')
+
+	def test_view_address_POST_invalid(self):
+
+		response = self.client.post(
+			'/auth/address/',
+			{
+				'country': 'Poland',
+				'city': '   Opole',
+				'street': 'Testing',
+				'postcode': '47-a24',
+			},
+		)
+
+		self.assertEquals(response.data.get('postcode')[0], 'Poscode should consist of integer values separated with -')
+		self.assertEquals(response.status_code, 422)
+
 
 	def test_view_membership_GET(self):
 		""" Testing membership view using APIClient
