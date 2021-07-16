@@ -1,17 +1,17 @@
 version: "3.8"
 
 services:
-    django:
+    gymserver:
         build: .
         container_name: gym-app-server
-        command: python backend/manage.py runserver 0.0.0.0:8000
+        command: python manage.py runserver 0.0.0.0:8000
         volumes:
             - .:/usr/src/app
-        ports:
-            - "8000:8000"
         environment:
             - DEBUG=1
-            - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1
+            - ALLOWED_HOSTS=127.0.0.1
+        ports:
+            - "8000:8000"
         depends_on:
             - gymappdb
     gymappdb:
