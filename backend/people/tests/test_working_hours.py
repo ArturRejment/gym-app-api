@@ -79,3 +79,17 @@ class TestWorkingHours(APITestCase):
 
 		self.assertEquals(response.status_code, 200)
 
+	def test_working_hours_view_GET(self):
+		""" Test workingHours/ API endpoint GET method """
+		response = self.client.get(
+			'/workingHours/',
+			headers={
+				'Content-Type':'application/x-www-form-urlencoded'
+			}
+		)
+
+		print(response)
+
+		self.assertEquals(response.status_code, 200)
+
+
