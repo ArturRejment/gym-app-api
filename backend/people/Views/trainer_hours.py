@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import status
 
-from people.serializers import TrainerHoursSerializer, ActiveHoursSerializer, SignForTrainingSerializer, GroupTrainingsSerializer
+from people.serializers import TrainerWorkingHoursCreateSerializer, TrainerHoursSerializer, ActiveHoursSerializer, SignForTrainingSerializer, GroupTrainingsSerializer
 from people.models import GymMember, Trainer
 from authApp.decorators import allowed_users, allowed_users_class
 import gym.models as GymModels
@@ -38,6 +38,27 @@ class TrainerHours(APIView):
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data)
+		else:
+			return Response(serializer.errors, status=422)
+
+	@allowed_users_class(allowed_roles=['trainer'])
+	def post(self, request):
+		""" Create new trainer's working hour
+
+		@param1 - working
+		"""
+		trainer = request.user.trainer
+
+		serializer = TrainerWorkingHoursCreateSerializer(
+			data={
+				'trainer': trainer.id,
+				'working': request.data.get('working'),
+			}
+		)
+
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=201)
 		else:
 			return Response(serializer.errors, status=422)
 

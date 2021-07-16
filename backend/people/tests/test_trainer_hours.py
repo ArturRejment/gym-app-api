@@ -5,11 +5,16 @@ from django.contrib.auth.models import Group
 
 import gym.models as GymModels
 from authApp.models import Address, User
+import people.models as PeopleModels
 
 class TestWorkingHours(APITestCase):
 	""" Testing Working Hours Views """
 
 	def setUp(self):
+		self.working = GymModels.WorkingHours.objects.create(
+			start_time='12:30',
+			finish_time='13:30'
+		)
 		self.address = Address.objects.create(
 			country='Poland',
 			city='Honolulu',
@@ -42,6 +47,10 @@ class TestWorkingHours(APITestCase):
 		client = User.objects.get(username = 'test')
 		client.groups.add(trainer_group)
 
+		trainer = PeopleModels.Trainer.objects.create(
+			user=client
+		)
+
 		token_resp = self.client.post(
 			'/auth/token/login/',
 			{
@@ -58,3 +67,17 @@ class TestWorkingHours(APITestCase):
 		self.token = token_resp.data.get('auth_token')
 		# Set generated token as default authentication credentials
 		self.client.defaults['HTTP_AUTHORIZATION'] = 'Token ' + self.token
+
+	def test_trainer_hours_view_POST(self):
+
+		response = self.client.post(
+			'/trainer/',
+			{
+				'working': self.working.id
+			},
+			headers={
+				'Content-Type':'application/x-www-form-urlencoded'
+			}
+		)
+
+		self.assertEquals(response.status_code, 201)

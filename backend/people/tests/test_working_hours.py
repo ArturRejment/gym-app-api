@@ -88,8 +88,6 @@ class TestWorkingHours(APITestCase):
 			}
 		)
 
-		print(response)
-
 		self.assertEquals(response.status_code, 200)
 
 

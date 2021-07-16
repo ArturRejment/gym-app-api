@@ -14,6 +14,12 @@ class TrainerSerializerShort(serializers.ModelSerializer):
 		model = Trainer
 		fields = ('id', 'user')
 
+class TrainerWorkingHoursCreateSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = GymModels.TrainerHours
+		fields = ['trainer', 'working']
+
+
 class TrainerHoursSerializer(serializers.ModelSerializer):
 	member = serializers.CharField()
 	working_start = serializers.CharField(source='working.start_time', read_only=True)
