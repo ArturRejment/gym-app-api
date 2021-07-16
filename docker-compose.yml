@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+    django:
+        build: .
+        container_name: gym-app-server
+        command: python backend/manage.py runserver 0.0.0.0:8000
+        volumes:
+            - .:/usr/src/app
+        ports:
+            - "8000:8000"
+        environment:
+            - DEBUG=1
+            - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1
+        depends_on:
+            - gymappdb
+    gymappdb:
+        image: postgres
+        container_name: gymappdb
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        volumes:
+            - pgdata:/var/lib/postgresql/data/
+volumes:
+    pgdata:
