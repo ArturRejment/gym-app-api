@@ -6,7 +6,7 @@ This API provides endpoints from which you can fetch the data for your front-end
   - [With Docker](#with-docker)
   - [Without Docker](#without-docker)
   - [Manage the database](#manage-the-database)
-  - [Testing](#testing-with-docker)
+  - [Testing](#testing)
 - [Authentication](#Authentication)
   - [`auth/users/me/`](#authusersme)
   - [`auth/token/login/`](#authtokenlogin)

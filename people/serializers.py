@@ -31,6 +31,7 @@ class TrainerHoursSerializer(serializers.ModelSerializer):
 		fields = ('id', 'working_start', 'working_finish', 'member', 'is_active')
 
 	def validate_member(self, value):
+
 		try:
 			member = GymMember.objects.get(id=value)
 		except:

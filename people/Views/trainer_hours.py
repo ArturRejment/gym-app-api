@@ -31,7 +31,7 @@ class TrainerHours(APIView):
 		try:
 			updatingHour = trainer.trainerhours_set.get(id = hourID)
 		except:
-			return Response(data='You do not have permissions to update this hour', status=442)
+			return Response(data='You have no permissions to update this hour', status=442)
 
 		serializer = TrainerHoursSerializer(instance = updatingHour, data=request.data)
 
@@ -67,7 +67,7 @@ class TrainerHours(APIView):
 @allowed_users(allowed_roles=['member'])
 def viewAvailableTrainers(request):
 	trainers = Trainer.objects.all()
-	acitveHours = [trainer.trainerhours_set.all() for trainer in trainers]
+	acitveHours = [trainer.trainerhours_set.filter(is_active=True).filter(member=None) for trainer in trainers]
 	# activeHour = trainers.trainerhours_set.all()
 
 	serializer = {}
@@ -87,20 +87,20 @@ def signForPersonalTraining(request):
 	member = request.user.gymmember
 	hourID = request.data.get('hourID')
 	if hourID == None:
-		return Response({'Missing argument': 'Missing required argument \'hourId\''})
+		return Response({'Missing argument': 'Missing required argument \'hourID\''})
 
 	try:
 		training = GymModels.TrainerHours.objects.get(id=hourID)
 	except Exception:
-		return Response(f'There is no hour with id {hourID}')
+		return Response(f'There is no hour with id {hourID}', status=422)
 
 	if training.member != None:
-		return Response(f'There is already someone else signed for this training!')
+		return Response(f'There is already someone else signed for this training!', status=422)
 
 	serializer = SignForTrainingSerializer(instance=training, data={'member':member.id})
 	if serializer.is_valid():
 		serializer.save()
-		return Response(serializer.data)
+		return Response("Successfully signed for training!", status=200)
 	else:
 		return Response(serializer.errors, status=422)
 

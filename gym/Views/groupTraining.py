@@ -26,7 +26,7 @@ class GroupTrainingView(APIView):
 		return Response(serializer.data)
 
 
-	@allowed_users_class(allowed_roles=['receptionist'])
+	@allowed_users_class(allowed_roles=['receptionist', 'trainer'])
 	def post(self, request):
 		"""
 		Function allows to create new group training
