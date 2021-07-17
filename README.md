@@ -3,7 +3,10 @@ An API for Gym App built with Django and REST Framework. User authentication is 
 This API provides endpoints from which you can fetch the data for your front-end application.
 
 - [How to run the server?](#how-to-run-the-server)
-  - [View the database](#view-the-database)
+  - [With Docker](#with-docker)
+  - [Without Docker](#without-docker)
+  - [Manage the database](#manage-the-database)
+  - [Testing](#testing-with-docker)
 - [Authentication](#Authentication)
   - [`auth/users/me/`](#authusersme)
   - [`auth/token/login/`](#authtokenlogin)
@@ -35,21 +38,37 @@ This API provides endpoints from which you can fetch the data for your front-end
 
 # How to run the server
 
+## With Docker
+- Set the project with `docker-compose run gymserver`
+- Run servers with `docker-compose up`
+- Build project with `docer-compose build`
+- To migrate the database open gymserver with bash: `docker exec -it gym-app-server bash` and type `python manage.py migrate`
+
+## Without Docker
 - Clone this repo
+- Create Postgres DB locally
+- Go to the Django project settings: `backend > settings.py`
+- Find `DATABASES` dictionary and change db credentials to match with yours
 - Create virtual environment with command `python -m venv env`
 - Type `env\Scripts\activate.bat` to activate the environment
 - Type `pip install -r requirements.txt` to install all the necessary libs
-- Go to the backend location with `cd backend`
-- Set the database with two commands: `python manage.py makemigrations` and then `python manage.py migrate`
+- Set the database with `python manage.py migrate`
 - Run server with `python manage.py runserver`
 
-## View the database
-If you want to view your database, create a super user and go to the admin page.
+## Manage the database
+If you want to manage your database, create a super user and go to the admin page.
 
-- Open directory where is `manage.py` file
-- Create super user with `python manage.py createsuperuser`
+- If you use Docker open gymserver with bash: `docker exec -it gym-app-server bash` and type `python manage.py createsuperuser`
+- If not, make sure you have virtual env active, open directory where is `manage.py` file and type `python manage.py createsuperuser`
 - Provide the required informations like username, email, password etc.
 - Run the server, go to the `http://127.0.0.1:8000/admin` and log in with credentials provided in the previous step
+
+## Testing
+
+To run the tests while using Docker open gymserver with bash: `docker exec -it gym-app-server bash` and type `python manage.py test`
+
+If you're not using Docker make sure you have virtual env active and type `python manage.py test`
+
 
 
 # Endpoints

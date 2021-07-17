@@ -26,5 +26,8 @@ class User(AbstractUser):
 
 	def save(self, *args, **kwargs):
 		super().save(*args, **kwargs)
-		group = Group.objects.get(name='member')
+		try:
+			group = Group.objects.get(name='member')
+		except:
+			group = Group.objects.create(name='member')
 		self.groups.add(group)

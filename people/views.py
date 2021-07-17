@@ -16,42 +16,7 @@ import gym.models as GymModels
 def apiOverview(request):
 
 	context = {
-		'GET': 'GET Method',
-		'/auth/users/me/': '[Logged user] returns details about currently logged user',
-		'/trainer/working/': '[Trainer] returns details about trainer working hours',
-		'/trainer/viewGroupTrainings/' : '[Trainer] returns trainer\'s group trainings',
-		'/viewActiveHours/': '[Anyone] returns available training hours',
-
-		'/groupTrainings/': '[Anyone] returns available group trainings',
-
-		'/product/viewProducts/': '[Anyone] returns products currently available in shop specified by id',
-		'/product/': '[Receptionist] returns all products that can be added to the shop',
-
-		'/embership/': '[Anyone] allows to browse all membership',
-		'/membership/activeMemberships/': '[Receptionist] returns every member who has active membership',
-
-		'/shop/': '[Anyone] allows to view all shops',
-
-		'POST': 'POST Method',
-		'/auth/token/login/': '[Anyone] allows to login for the account - returns auth_token if success',
-		'/auth/users/ [Anyone]': 'allows to register an Gym Member account',
-		'/auth/token/logout/': '[Logged user] allows to logout',
-		'/auth/createAddress/': '[Anyone] creates an address',
-		'/trainer/updateHour/': '[Trainer] allows to update information about trainer working hour specified by id',
-		'/signForPersonalTraining/': '[GymMember] allows to sign for personal training specified by id',
-
-		'/groupTraining/signForTraining/': '[GymMember] allows to sign for group training specified by id',
-		'/addProductToShop/': '[Receptionist] allows to add a product to the shop',
-		'/product/': '[Receptionist] allows to create a new product',
-
-		'/membership/': '[Receptionist] allows to create a new membership',
-		'/membership/renewMembership/': '[GymMember] allows to renew membership',
-
-		'/groupTraining/': '[Receptionist] allows to create a new group training',
-		'/shop/': '[Receptionist] allows to create new shop',
-
-		'DELETE': 'DELETE Method',
-		'/product/': '[Receptionist] allows to delete particular product form the shop',
+		'API Overview available here: ': 'https://github.com/ArturRejment/gym-app-api',
 	}
 	return Response(context)
 
