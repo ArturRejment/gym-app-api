@@ -41,8 +41,9 @@ This API provides endpoints from which you can fetch the data for your front-end
 ## With Docker
 - Set the project with `docker-compose run gymserver`
 - Run servers with `docker-compose up`
-- Build project with `docer-compose build`
 - To migrate the database open gymserver with bash: `docker exec -it gym-app-server bash` and type `python manage.py migrate`
+
+You can build the project with `docer-compose build`
 
 ## Without Docker
 - Clone this repo
@@ -56,7 +57,7 @@ This API provides endpoints from which you can fetch the data for your front-end
 - Run server with `python manage.py runserver`
 
 ## Manage the database
-If you want to manage your database, create a super user and go to the admin page.
+If you want to manage your database, create a superuser and go to the admin page.
 
 - If you use Docker open gymserver with bash: `docker exec -it gym-app-server bash` and type `python manage.py createsuperuser`
 - If not, make sure you have virtual env active, open directory where is `manage.py` file and type `python manage.py createsuperuser`
