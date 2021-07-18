@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import status
 
-from people.serializers import TrainerWorkingHoursCreateSerializer, TrainerHoursSerializer, ActiveHoursSerializer, SignForTrainingSerializer, GroupTrainingsSerializer
+from people.serializers import *
 from people.models import GymMember, Trainer
 from authApp.decorators import allowed_users, allowed_users_class
 import gym.models as GymModels
@@ -66,15 +66,22 @@ class TrainerHours(APIView):
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['member'])
 def viewAvailableTrainers(request):
-	trainers = Trainer.objects.all()
-	acitveHours = [trainer.trainerhours_set.filter(is_active=True).filter(member=None) for trainer in trainers]
-	# activeHour = trainers.trainerhours_set.all()
+	""" Get available hours to sing for personal training """
 
+	# Get all trainers
+	trainers = Trainer.objects.all()
+	# Create a list which contains sets with active hours for every trainer
+	acitveHours = [trainer.trainerhours_set.filter(is_active=True).filter(member=None) for trainer in trainers]
+
+	# Prepare a dictionary that will represent serializer
 	serializer = {}
 
+	# loop through every set in list (active hours for specific trainer)
 	for i, hour in enumerate(acitveHours):
+		# Create trainer personal data that will be also a key in serializer
 		trainer = str(trainers[i].user).split(" ")
 		trainerName = trainer[1] + ' ' + trainer[2]
+		# Append all active hours for specific trainer
 		serializer[f'{trainerName}'] =  ActiveHoursSerializer(acitveHours[i], many=True).data
 
 	return Response(serializer)
@@ -83,31 +90,36 @@ def viewAvailableTrainers(request):
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['member'])
 def signForPersonalTraining(request):
+	""" Sign for personal training
 
+	@param1 - hourID
+	"""
 	member = request.user.gymmember
 	hourID = request.data.get('hourID')
 	if hourID == None:
-		return Response({'Missing argument': 'Missing required argument \'hourID\''})
+		return serializers.ValidationError({'Missing argument': 'Missing required argument \'hourID\''}, status=422)
 
 	try:
 		training = GymModels.TrainerHours.objects.get(id=hourID)
 	except Exception:
-		return Response(f'There is no hour with id {hourID}', status=422)
+		return serializers.ValidationError(f'There is no hour with id {hourID}', status=422)
 
 	if training.member != None:
-		return Response(f'There is already someone else signed for this training!', status=422)
+		return serializers.ValidationError(f'There is already someone else signed for this training!', status=422)
 
 	serializer = SignForTrainingSerializer(instance=training, data={'member':member.id})
 	if serializer.is_valid():
 		serializer.save()
 		return Response("Successfully signed for training!", status=200)
 	else:
-		return Response(serializer.errors, status=422)
+		return serializers.ValidationError(serializer.errors, status=422)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['trainer'])
 def viewGroupTrainings(request):
+	""" Get all group trainings where trainer is conductor """
+
 	trainer = request.user.trainer
 
 	groupTrainings = trainer.grouptraining_set.all()
