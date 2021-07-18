@@ -1,7 +1,24 @@
 # Other Endpoints
 
-## Working hours
+- [Working hours](#working-hours)
+  - [`workingHours/`](#workinghours)
+- [Address](#Address)
+  - [`address/`](#address)
+- [Shop](#Shop)
+  - [`shop/`](#shop)
+- [Product](#Product)
+  - [`product/`](#product)
+  - [`product/viewProducts`](#productviewproducts)
+  - [`product/addProductToShop`](#productaddproducttoshop)
+- [Membership](#Membership)
+  - [`membership/`](#membership)
+  - [`membership/activeMemberships`](#membershipactivememberships)
+  - [`membership/renewMembership`](#membershiprenewmembership)
+- [Group Training](#Group-training)
+  - [`groupTraining/`](#grouptraining)
+  - [`groupTraining/signForTraining/`](#grouptrainingsignfortraining)
 
+## Working hours
 
 ### `workingHours/`
 - Allowed methods
