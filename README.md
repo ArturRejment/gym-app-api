@@ -30,6 +30,9 @@ You can build the project with `docer-compose build`
 - Set the database with `python manage.py migrate`
 - Run server with `python manage.py runserver`
 
+## Set up project
+
+Now you can set up project by [following this doc](https://github.com/ArturRejment/gym-app-api/blob/main/docs/project_set_up.md)
 
 ## Testing
 
