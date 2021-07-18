@@ -92,8 +92,7 @@ def viewAvailableTrainers(request):
 def signForPersonalTraining(request):
 	""" Sign for personal training
 
-	@param1 - hourID
-	"""
+	@param1 - hourID """
 	member = request.user.gymmember
 	hourID = request.data.get('hourID')
 	if hourID == None:
