@@ -15,7 +15,7 @@ def allowed_users(allowed_roles = []):
                 if group.name in allowed_roles:
                     return view_function(request, *args, **kwargs)
 
-            return Response({"Auth": ["You are not authorized to view the page!"]}, status=401)
+            return Response({"Auth": ["You are not authorized to view the page!"]}, status=403)
 
             return view_function(request, *args, **kwargs)
 
@@ -36,7 +36,7 @@ def allowed_users_class(allowed_roles = []):
                 if group.name in allowed_roles:
                     return view_function(self, request, *args, **kwargs)
 
-            return Response({"Auth": ["You are not authorized to view the page!"]}, status=401)
+            return Response({"Auth": ["You are not authorized to view the page!"]}, status=403)
 
             return view_function(self, request, *args, **kwargs)
 
