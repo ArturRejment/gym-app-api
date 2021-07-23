@@ -24,4 +24,4 @@ If you gave trainer or receptionist permissions for the user, you should also cr
 ## Next steps
 
 After creating enough amout of Users, you can continue adding new things like group trainings, shops, products etc.
-You can do it both from Admin panel and API Endpoints.
+You can do it from Admin panel and API Endpoints.

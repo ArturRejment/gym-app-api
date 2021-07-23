@@ -1,8 +1,8 @@
-# Authorization
+# Authentication
 
-Authorization for this project is provided by Djoser https://djoser.readthedocs.io/en/latest/introduction.html
+Authentication for this project is provided by Djoser https://djoser.readthedocs.io/en/latest/introduction.html
 
-## API Endpoints for Authorization
+## API Endpoints for Authentication
 
 ### `auth/users/me/`
 - Allowed methods

@@ -6,8 +6,8 @@ This API provides endpoints wherefrom you can fetch the data for your front-end 
   - [With Docker](#with-docker)
   - [Without Docker](#without-docker)
   - [Testing](#testing)
-- [Authentication](#Authentication)
-- [Trainer](#Trainer)
+- [Set up project](#set-up-project)
+- [Testing](#testing)
 
 
 # How to run the server
@@ -36,7 +36,7 @@ Now you can set up project by [following this doc](https://github.com/ArturRejme
 
 ## Testing
 
-To run the tests while using Docker open gymserver with bash: `docker exec -it gym-app-server bash` and type `python manage.py test`
+In order to run the tests with Docker, open gymserver with bash: `docker exec -it gym-app-server bash` and type `python manage.py test`
 
 If you're not using Docker make sure you have virtual env active and type `python manage.py test`
 
