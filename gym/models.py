@@ -2,7 +2,7 @@ from django.db import models
 from people.models import Trainer, Receptionist, GymMember
 from authApp.models import Address
 
-# Create your models here.
+
 class TrainerHours(models.Model):
 	trainer = models.ForeignKey(Trainer, on_delete=models.DO_NOTHING)
 	working = models.ForeignKey('WorkingHours', on_delete=models.DO_NOTHING)
@@ -12,6 +12,7 @@ class TrainerHours(models.Model):
 	def __str__(self):
 	 return str(self.trainer) + ' ' + str(self.working)
 
+
 class WorkingHours(models.Model):
 	start_time = models.CharField(max_length=5, null=False, blank=False)
 	finish_time = models.CharField(max_length=50, null=False, blank=False)
@@ -19,12 +20,14 @@ class WorkingHours(models.Model):
 	def __str__(self):
 		return f'{self.start_time} - {self.finish_time}'
 
+
 class Membership(models.Model):
 	membership_type = models.CharField(max_length=200, unique=True)
 	membership_price = models.DecimalField(max_digits=5, decimal_places=2)
 
 	def __str__(self):
 		return self.membership_type
+
 
 class MemberMemberships(models.Model):
 	membership = models.ForeignKey(Membership, on_delete=models.CASCADE)
@@ -34,6 +37,7 @@ class MemberMemberships(models.Model):
 
 	def __str__(self):
 	 return f'{self.member} has {self.membership} until {self.expiry_date}'
+
 
 class Product(models.Model):
 	product_name = models.CharField(max_length=250)
@@ -51,6 +55,7 @@ class Shop(models.Model):
 	def __str__(self):
 		return f'{self.shop_name} {self.address}'
 
+
 class ShopProducts(models.Model):
 	shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=False, blank=False)
 	product = models.ForeignKey(Product, on_delete=models.CASCADE, null=False, blank=False)
@@ -58,6 +63,7 @@ class ShopProducts(models.Model):
 
 	def __str__(self):
 		return f'{self.product} in {self.shop}'
+
 
 class GroupTraining(models.Model):
 	training_name = models.CharField(max_length=250, null=False, blank=False, unique=True)
@@ -67,16 +73,16 @@ class GroupTraining(models.Model):
 
 	@property
 	def signedPeople(self):
-		groupTrainings = GroupTrainingSchedule.objects.filter(group_training = self)
+		groupTrainings = GroupTrainingSchedule.objects.filter(group_training=self)
 		return groupTrainings.count()
 
 	def __str__(self):
 		return self.training_name
 
+
 class GroupTrainingSchedule(models.Model):
 	group_training = models.ForeignKey(GroupTraining, null=False, blank=False, on_delete=models.CASCADE)
 	member = models.ForeignKey(GymMember, null=False, blank=False, on_delete=models.CASCADE)
-
 
 	def __str__(self):
 		return f'{self.member} in {self.group_training}'

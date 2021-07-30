@@ -1,12 +1,15 @@
+import json
+import coreapi
+
 from django.test import TestCase, Client
 from django.urls import reverse
 from rest_framework.test import RequestsClient, APITestCase, APIClient
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import Group
+
 import gym.models as GymModels
 from authApp.models import Address
-import json
-import coreapi
+
 
 class TestAuthenticationViews(APITestCase):
 	""" Testing Authentication with API Views """
@@ -22,10 +25,9 @@ class TestAuthenticationViews(APITestCase):
 			name='member'
 		)
 
-
 	def test_member_sign_up(self):
 
-		#! Create new user
+		# Create new user
 		response = self.client.post(
 			'/auth/users/',
 			{
@@ -45,7 +47,7 @@ class TestAuthenticationViews(APITestCase):
 		# Check if user was created
 		self.assertEquals(response.status_code, 201)
 
-		#! Login created user with credentials
+		# Login created user with credentials
 		response = self.client.post(
 			'/auth/token/login/',
 			{
@@ -66,7 +68,6 @@ class TestOpenAccessViews(APITestCase):
 		Views that can be accessed by anyone who is authenticated """
 
 	def setUp(self):
-
 		self.address = Address.objects.create(
 			country='Poland',
 			city='Honolulu',
@@ -74,7 +75,7 @@ class TestOpenAccessViews(APITestCase):
 			postcode='15-223',
 		)
 		shop = GymModels.Shop.objects.create(
-			shop_name="Gym Fit Shop",
+			shop_name='Gym Fit Shop',
 			address = self.address
 		)
 		self.shop_id = shop.id
@@ -97,7 +98,6 @@ class TestOpenAccessViews(APITestCase):
 				'Content-Type':'application/x-www-form-urlencoded'
 			},
 		)
-
 		token_resp = self.client.post(
 			'/auth/token/login/',
 			{
@@ -108,15 +108,11 @@ class TestOpenAccessViews(APITestCase):
 				'Content-Type':'application/x-www-form-urlencoded'
 			}
 		)
-
-
 		# Save auth token
 		self.token = token_resp.data.get('auth_token')
-
 		# Set generated token as default authentication credentials
 		self.requestClient = APIClient()
 		self.client.defaults['HTTP_AUTHORIZATION'] = 'Token ' + self.token
-
 
 	def test_view_address_POST(self):
 		""" Testing address creation using API view """
@@ -133,7 +129,6 @@ class TestOpenAccessViews(APITestCase):
 				'Content-Type':'application/x-www-form-urlencoded'
 			}
 		)
-
 		self.assertEquals(response.status_code, 200)
 		self.assertEquals(response.data.get('country'), 'Poland')
 		self.assertEquals(response.data.get('street'), 'Testing')
@@ -150,26 +145,21 @@ class TestOpenAccessViews(APITestCase):
 				'postcode': '47-a24',
 			},
 		)
-
 		self.assertEquals(response.data.get('postcode')[0], 'Poscode should consist of integer values separated with -')
 		self.assertEquals(response.status_code, 422)
-
 
 	def test_view_membership_GET(self):
 		""" Testing membership view using APIClient
 			by sending get request to the /membership url """
 
-
-		"""! There is no need to send the headers
-			just change default HTTP_AUTHORIZATION """
+		#! There is no need to send the headers
+		#! just change default HTTP_AUTHORIZATION
 		response = self.client.get(
 			'http://127.0.0.1:8000/membership/',
 			json={}
 		)
 		self.assertEquals(response.status_code, 200)
 		self.assertEquals(len(list(response.data)), 0)
-
-
 		membership = GymModels.Membership.objects.create(
 			membership_type="Open 24",
 			membership_price=150
@@ -178,7 +168,6 @@ class TestOpenAccessViews(APITestCase):
 			'http://127.0.0.1:8000/membership/',
 			json={}
 		)
-
 		self.assertEquals(response.status_code, 200)
 		self.assertEquals(len(list(response.data)), 1)
 

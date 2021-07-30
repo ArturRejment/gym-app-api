@@ -16,8 +16,8 @@ class AddressView(APIView):
 
 	def post(self, request):
 		"""
-		Create new address
-		"""
+		Create new address """
+
 		serializer = AddressSerializer(data=request.data)
 		if serializer.is_valid():
 			serializer.save()
@@ -28,8 +28,8 @@ class AddressView(APIView):
 	@allowed_users_class(allowed_roles=['receptionist'])
 	def get(self, request):
 		"""
-		Returns all addresses
-		"""
+		Returns all addresses """
+
 		addresses = Address.objects.all()
 		serializer = AddressSerializer(addresses, many=True)
 		return Response(serializer.data)

@@ -5,6 +5,7 @@ import gym.Views.product as prod
 import gym.Views.groupTraining as groupT
 import gym.Views.shop as shop
 
+
 class TestMembershipUrls(SimpleTestCase):
 
 	def test_membership(self):
@@ -18,6 +19,7 @@ class TestMembershipUrls(SimpleTestCase):
 	def test_renewMembership(self):
 		url = reverse('renewMembership')
 		self.assertEquals(resolve(url).func, memb.renewMembership)
+
 
 class TestProductUrls(SimpleTestCase):
 
@@ -33,6 +35,7 @@ class TestProductUrls(SimpleTestCase):
 		url = reverse('addProduct')
 		self.assertEquals(resolve(url).func, prod.addProduct)
 
+
 class TestGroupTrainingUrls(SimpleTestCase):
 
 	def test_group_training(self):
@@ -42,6 +45,7 @@ class TestGroupTrainingUrls(SimpleTestCase):
 	def test_sign_group_training(self):
 		url = reverse('signForTraining')
 		self.assertEquals(resolve(url).func, groupT.signUpForTraining)
+
 
 class TestShopUrls(SimpleTestCase):
 

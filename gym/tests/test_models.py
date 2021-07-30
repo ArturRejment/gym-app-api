@@ -1,11 +1,13 @@
+import datetime
+
 from django.test import TestCase
+from django.contrib.auth.models import Group
+
 import gym.models as GymModels
 import authApp.models as AuthModels
 import people.models as PeopleModels
 import gym.serializers as GymSerializers
-from django.contrib.auth.models import Group
 
-import datetime
 
 class TestCapitalNamesModels(TestCase):
 
@@ -113,7 +115,7 @@ class TestProperties(TestCase):
 	def test_hasActiveMembership_property(self):
 		""" Testing hasActiveMembership property """
 
-		# At the beginning noone should have active membership
+		# At the beginning no one should have active membership
 		self.assertFalse(self.member1.hasActiveMembership)
 		self.assertFalse(self.member2.hasActiveMembership)
 
