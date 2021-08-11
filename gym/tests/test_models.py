@@ -149,12 +149,20 @@ class TestProperties(TestCase):
 		# No people signed for training
 		self.assertEquals(self.group_training.signedPeople, 0)
 
+		# Sign person
+		self.group_training.signInForGroupTraining(self.member1)
+
 		# One person signed for the training
 		self.assertEquals(self.group_training.signedPeople, 1)
+
+		# Sign another person for the training
+		self.group_training.signInForGroupTraining(self.member2)
 
 		# Two people signed for the training
 		self.assertEquals(self.group_training.signedPeople, 2)
 
+		# Sign person out from training
+		self.group_training.signOutFromGroupTraining(self.member2)
 
 		# One person left signed for the training
 		self.assertEquals(self.group_training.signedPeople, 1)

@@ -63,7 +63,7 @@ class GroupTrainingView(APIView):
 			return Response("Training deleted successfully")
 
 
-class SignForGroupTraining(APIView):
+class SignForGroupTrainingView(APIView):
 	permission_classes = (IsAuthenticated,)
 	serializer_class = GymSerializers.GroupTrainingSerializer
 

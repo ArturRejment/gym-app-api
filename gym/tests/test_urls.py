@@ -43,8 +43,8 @@ class TestGroupTrainingUrls(SimpleTestCase):
 		self.assertEquals(resolve(url).func.view_class, groupT.GroupTrainingView)
 
 	def test_sign_group_training(self):
-		url = reverse('signForTraining')
-		self.assertEquals(resolve(url).func, groupT.signUpForTraining)
+		url = reverse('signForGroupTraining', kwargs={'id': 1})
+		self.assertEquals(resolve(url).func.view_class, groupT.SignForGroupTrainingView)
 
 
 class TestShopUrls(SimpleTestCase):
