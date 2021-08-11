@@ -1,9 +1,11 @@
+import datetime
+
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from rest_framework import status, serializers
-import datetime
+from rest_framework.exceptions import NotFound
 
 import gym.models as GymModels
 import gym.serializers as GymSerializers
@@ -60,35 +62,46 @@ class GroupTrainingView(APIView):
 			training.delete()
 			return Response("Training deleted successfully")
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-@allowed_users(allowed_roles=['member'])
-def signUpForTraining(request):
-	"""
-	Funtion allows to sign up for a group training
 
-	Required parameters to send with request:
-	@param1 - trainingID
-	"""
-	member = request.user.gymmember
-	groupTrainingID = request.data.get('trainingID')
+class SignForGroupTrainingView(APIView):
+	permission_classes = (IsAuthenticated,)
+	serializer_class = GymSerializers.GroupTrainingSerializer
 
-	try:
-		groupTraining = GymModels.GroupTraining.objects.get(id=groupTrainingID)
-	except Exception:
-		raise serializers.ValidationError({'Group Training': [f'There is no group training with id {groupTrainingID}']}, code=422)
+	@allowed_users_class(allowed_roles=['member'])
+	def post(self, request, **kwargs):
+		""" POST method to sign in for group training
 
-	if groupTraining.signedPeople >= groupTraining.max_people:
-		raise serializers.ValidationError({'Error': 'There is already maximum number of people signed for this training'}, code=422)
+		Args:
+			**kwargs: send GroupTraining id
+		"""
+		group_training_id = kwargs['id']
+		try:
+			group_training = GymModels.GroupTraining.objects.get(id=group_training_id)
+		except GymModels.GroupTraining.DoesNotExist:
+			raise NotFound('Group training with this id does not exist')
 
-	trainSet = groupTraining.grouptrainingschedule_set.all()
-	for i, schedule in enumerate(trainSet):
-		if trainSet[i].member == member:
-			raise serializers.ValidationError({'Error': ['You are alredy signed for this training!']}, code=422)
+		member = request.user.gymmember
+		group_training.signInForGroupTraining(member)
+		serializer = self.serializer_class(group_training)
+		return Response(serializer.data, status=200)
 
-	newSchedule = GymModels.GroupTrainingSchedule.objects.create(
-		member=member,
-		group_training = groupTraining
-	)
 
-	return Response('You auspiciously signed for training!')
+	@allowed_users_class(allowed_roles=['member'])
+	def delete(self, request, **kwargs):
+		""" DELETE method to sign in for group training
+
+		Args:
+			**kwargs: send GroupTraining id
+		"""
+		group_training_id = kwargs['id']
+		try:
+			group_training = GymModels.GroupTraining.objects.get(id=group_training_id)
+		except GymModels.GroupTraining.DoesNotExist:
+			raise NotFound('Group training with this id does not exist')
+
+		member = request.user.gymmember
+		group_training.signOutFromGroupTraining(member)
+		serializer = self.serializer_class(group_training)
+		return Response(serializer.data, status=200)
+
+

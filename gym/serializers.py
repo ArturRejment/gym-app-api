@@ -91,24 +91,6 @@ class CreateGroupTrainingSerializer(serializers.ModelSerializer):
 		return GroupTraining.objects.create(**validated_data)
 
 
-class SignForGroupTrainingSerializer(serializers.ModelSerializer):
-	member = MemberSerializer()
-	groupTrainingID = serializers.IntegerField()
-
-	class Meta:
-		model = GroupTrainingSchedule
-		fields = ('id', 'member', 'groupTrainingID')
-
-	def validate_groupTrainingID(self, value):
-		try:
-			groupTraining = GroupTraining.objects.get(id = value)
-		except Exception:
-			raise serializers.ValidationError('Invalid group training id!', code=422)
-
-	def save(self, validated_data):
-		return GroupTrainingSchedule.objects.create(**validated_data)
-
-
 class MembershipSerializer(serializers.ModelSerializer):
 
 	class Meta:

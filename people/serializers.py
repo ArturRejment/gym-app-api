@@ -153,8 +153,6 @@ class WorkingHourSerializer(serializers.ModelSerializer):
 		return data
 
 
-
-
 class ActiveHoursSerializer(serializers.ModelSerializer):
 	# user = UserSerializer()
 	# workingHours = TrainerHoursSerializer(trainerhours_set.all())
@@ -162,6 +160,7 @@ class ActiveHoursSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = GymModels.TrainerHours
 		fields = ['id', 'working']
+
 
 class GroupTrainingsSerializer(serializers.ModelSerializer):
 	time = WorkingHourSerializer()

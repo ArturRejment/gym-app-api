@@ -172,25 +172,5 @@ class TestOpenAccessViews(APITestCase):
 		self.assertEquals(len(list(response.data)), 1)
 
 
-	""" In progress """
-	# def test_view_view_products(self):
-	# 	""" Testing viewProducts view using APIClient
-	# 	by sending get request to the /product/viewProducts/ url """
-
-	# 	self.client.defaults['Content-Type'] = 'application/x-www-form-urlencoded'
-
-	# 	response1 = self.client.get(
-	# 		'http://127.0.0.1:8000/product/viewProducts/',
-	# 		data={
-	# 			'shopID': 155
-	# 		},
-	# 		headers={
-	# 			'Content-Type':'application/x-www-form-urlencoded'
-	# 		}
-
-	# 	)
-	# 	print(response1.data)
-	# 	self.assertEquals(response1.status_code, 200)
-
 
 

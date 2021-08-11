@@ -17,7 +17,7 @@ urlpatterns = [
 
 	# Group trainings
 	path('groupTraining/', GroupTrainingView.GroupTrainingView.as_view(), name='viewGroupTrainings'),
-	path('groupTraining/signForTraining/', GroupTrainingView.signUpForTraining, name='signForTraining'),
+	path('signForGroupTraining/<int:id>/', GroupTrainingView.SignForGroupTrainingView.as_view(), name='signForGroupTraining'),
 
 	# Shop
 	path('shop/', ShopViews.ShopView.as_view(), name='shop'),
