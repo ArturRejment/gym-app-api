@@ -76,11 +76,11 @@ class GroupTraining(models.Model):
 	def signedPeople(self):
 		return self.signed_members.count()
 
-	def signInForTraining(self, member):
+	def signInForGroupTraining(self, member):
 		""" Sign user in for a training """
 		self.signed_members.add(member)
 
-	def signOutFromTraining(self, member):
+	def signOutFromGroupTraining(self, member):
 		""" Sign user out from training """
 		self.signed_members.remove(member)
 

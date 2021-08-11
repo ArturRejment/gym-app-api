@@ -50,6 +50,24 @@ class TrainerHoursSerializer(serializers.ModelSerializer):
 		instance.save()
 		return instance
 
+class SignForTrainingSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = GymModels.TrainerHours
+		fields = ['member']
+
+	def validate_hourID(self, value):
+		try:
+			hour = GymModels.TrainerHours.objects.get(id = value)
+		except Exception:
+			raise serializers.ValidationError("Wrong hourID given!", code=422)
+
+	def update(self, instance, validated_data):
+		ident = validated_data.get('member', instance.member)
+
+		instance.member = ident
+
+		instance.save()
+		return instance
 
 class WorkingHourSerializer(serializers.ModelSerializer):
 	class Meta:
