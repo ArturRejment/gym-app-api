@@ -6,7 +6,7 @@ import gym.utils as ut
 
 class UserCreateSerializer(UserCreateSerializer):
 
-	address = serializers.IntegerField(source='address.id', allow_null=True)
+	address = serializers.PrimaryKeyRelatedField(many=False, queryset=User.objects.all())
 
 	class Meta(UserCreateSerializer.Meta):
 		model = User

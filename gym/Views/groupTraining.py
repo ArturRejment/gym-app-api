@@ -60,35 +60,35 @@ class GroupTrainingView(APIView):
 			training.delete()
 			return Response("Training deleted successfully")
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-@allowed_users(allowed_roles=['member'])
-def signUpForTraining(request):
-	"""
-	Funtion allows to sign up for a group training
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# @allowed_users(allowed_roles=['member'])
+# def signUpForTraining(request):
+# 	"""
+# 	Funtion allows to sign up for a group training
 
-	Required parameters to send with request:
-	@param1 - trainingID
-	"""
-	member = request.user.gymmember
-	groupTrainingID = request.data.get('trainingID')
+# 	Required parameters to send with request:
+# 	@param1 - trainingID
+# 	"""
+# 	member = request.user.gymmember
+# 	groupTrainingID = request.data.get('trainingID')
 
-	try:
-		groupTraining = GymModels.GroupTraining.objects.get(id=groupTrainingID)
-	except Exception:
-		raise serializers.ValidationError({'Group Training': [f'There is no group training with id {groupTrainingID}']}, code=422)
+# 	try:
+# 		groupTraining = GymModels.GroupTraining.objects.get(id=groupTrainingID)
+# 	except Exception:
+# 		raise serializers.ValidationError({'Group Training': [f'There is no group training with id {groupTrainingID}']}, code=422)
 
-	if groupTraining.signedPeople >= groupTraining.max_people:
-		raise serializers.ValidationError({'Error': 'There is already maximum number of people signed for this training'}, code=422)
+# 	if groupTraining.signedPeople >= groupTraining.max_people:
+# 		raise serializers.ValidationError({'Error': 'There is already maximum number of people signed for this training'}, code=422)
 
-	trainSet = groupTraining.grouptrainingschedule_set.all()
-	for i, schedule in enumerate(trainSet):
-		if trainSet[i].member == member:
-			raise serializers.ValidationError({'Error': ['You are alredy signed for this training!']}, code=422)
+# 	trainSet = groupTraining.grouptrainingschedule_set.all()
+# 	for i, schedule in enumerate(trainSet):
+# 		if trainSet[i].member == member:
+# 			raise serializers.ValidationError({'Error': ['You are alredy signed for this training!']}, code=422)
 
-	newSchedule = GymModels.GroupTrainingSchedule.objects.create(
-		member=member,
-		group_training = groupTraining
-	)
+# 	newSchedule = GymModels.GroupTrainingSchedule.objects.create(
+# 		member=member,
+# 		group_training = groupTraining
+# 	)
 
-	return Response('You auspiciously signed for training!')
+# 	return Response('You auspiciously signed for training!')

@@ -70,19 +70,25 @@ class GroupTraining(models.Model):
 	trainer = models.ForeignKey(Trainer, null=False, blank=False, on_delete=models.CASCADE)
 	time = models.ForeignKey(WorkingHours, null=False, blank=False, on_delete=models.CASCADE)
 	max_people = models.IntegerField()
+	signed_members = models.ManyToManyField(GymMember, related_name='signed')
 
 	@property
 	def signedPeople(self):
-		groupTrainings = GroupTrainingSchedule.objects.filter(group_training=self)
-		return groupTrainings.count()
+		return self.signed_members.count()
+
+	def signInForTraining(self, member):
+		""" Sign user in for a training """
+		self.signed_members.add(member)
+
+	def signOutFromTraining(self, member):
+		""" Sign user out from training """
+		self.signed_members.remove(member)
+
+	def isSignedForTraining(self, member):
+		""" Returns True if member is alredy signed for training.
+		False otherwise """
+		self.signed_members.filter(id = member.id).exists()
 
 	def __str__(self):
 		return self.training_name
 
-
-class GroupTrainingSchedule(models.Model):
-	group_training = models.ForeignKey(GroupTraining, null=False, blank=False, on_delete=models.CASCADE)
-	member = models.ForeignKey(GymMember, null=False, blank=False, on_delete=models.CASCADE)
-
-	def __str__(self):
-		return f'{self.member} in {self.group_training}'

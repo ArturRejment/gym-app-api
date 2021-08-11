@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import status
 
-from .serializers import TrainerHoursSerializer, ActiveHoursSerializer, SignForTrainingSerializer, GroupTrainingsSerializer
+from .serializers import TrainerHoursSerializer, ActiveHoursSerializer, GroupTrainingsSerializer
 from .models import GymMember, Trainer
 from authApp.decorators import allowed_users, allowed_users_class
 import gym.models as GymModels
@@ -76,26 +76,8 @@ def viewAvailableTrainers(request):
 @permission_classes([IsAuthenticated])
 @allowed_users(allowed_roles=['member'])
 def signForPersonalTraining(request):
+	pass
 
-	member = request.user.gymmember
-	hourID = request.data.get('hourID')
-	if hourID == None:
-		return Response({'Missing argument': 'Missing required argument \'hourId\''})
-
-	try:
-		training = GymModels.TrainerHours.objects.get(id=hourID)
-	except Exception:
-		return Response(f'There is no hour with id {hourID}')
-
-	if training.member != None:
-		return Response(f'There is already someone else signed for this training!')
-
-	serializer = SignForTrainingSerializer(instance=training, data={'member':member.id})
-	if serializer.is_valid():
-		serializer.save()
-		return Response(serializer.data)
-	else:
-		return Response(serializer.errors, status=422)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])

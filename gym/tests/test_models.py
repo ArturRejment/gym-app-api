@@ -149,26 +149,12 @@ class TestProperties(TestCase):
 		# No people signed for training
 		self.assertEquals(self.group_training.signedPeople, 0)
 
-		# Sign person
-		GymModels.GroupTrainingSchedule.objects.create(
-			group_training=self.group_training,
-			member=self.member1
-		)
-
 		# One person signed for the training
 		self.assertEquals(self.group_training.signedPeople, 1)
-
-		# Sign another person for the training
-		GymModels.GroupTrainingSchedule.objects.create(
-			group_training=self.group_training,
-			member=self.member2
-		)
 
 		# Two people signed for the training
 		self.assertEquals(self.group_training.signedPeople, 2)
 
-		# Sign person out from training
-		GymModels.GroupTrainingSchedule.objects.last().delete()
 
 		# One person left signed for the training
 		self.assertEquals(self.group_training.signedPeople, 1)
